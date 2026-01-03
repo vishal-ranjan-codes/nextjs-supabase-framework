@@ -1,0 +1,183 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import Logo from './Logo'
+import ThemeToggle from './ThemeToggle'
+import MobileNav from './MobileNav'
+import { Button } from '@/components/ui/button'
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu'
+import { cn } from '@/lib/utils'
+
+export default function Header() {
+    const pathname = usePathname()
+
+    return (
+        <header className="sticky top-0 z-50 theme-fg-color theme-border-color border-b backdrop-blur-sm bg-opacity-90">
+            <div className="container">
+                <div className="flex items-center justify-between h-20">
+                    {/* Logo and Site Title */}
+                    <div className="flex items-center gap-3">
+                        <Logo />
+                        <Link href="/" className="theme-fc-heading hover:theme-text-primary-color-100 transition-colors">
+                            <span className="font-semibold text-lg hidden sm:inline">
+                                Framework
+                            </span>
+                        </Link>
+                    </div>
+
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center gap-1">
+                        <NavigationMenu>
+                            <NavigationMenuList>
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>
+                                        Getting Started
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
+                                            <ListItem href="/" title="Introduction">
+                                                Quick overview of the framework and its features
+                                            </ListItem>
+                                            <ListItem href="/design-system" title="Design System">
+                                                Comprehensive design tokens and components
+                                            </ListItem>
+                                            <ListItem href="/" title="Installation">
+                                                Step-by-step setup instructions
+                                            </ListItem>
+                                            <ListItem href="/" title="Configuration">
+                                                Environment variables and project setup
+                                            </ListItem>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>
+                                        Components
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-2">
+                                            <ListItem href="/design-system#components" title="Form Elements">
+                                                Inputs, selects, checkboxes, and more
+                                            </ListItem>
+                                            <ListItem href="/design-system#components" title="Navigation">
+                                                Menus, breadcrumbs, and tabs
+                                            </ListItem>
+                                            <ListItem href="/design-system#components" title="Feedback">
+                                                Alerts, toasts, and dialogs
+                                            </ListItem>
+                                            <ListItem href="/design-system#components" title="Data Display">
+                                                Tables, cards, and badges
+                                            </ListItem>
+                                            <ListItem href="/design-system#colors" title="Colors">
+                                                Full color palette and usage
+                                            </ListItem>
+                                            <ListItem href="/design-system#typography" title="Typography">
+                                                Text styles and hierarchy
+                                            </ListItem>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>
+                                        Examples
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4">
+                                            <ListItem href="/about" title="About Page">
+                                                Example page with hero and content sections
+                                            </ListItem>
+                                            <ListItem href="/contact" title="Contact Page">
+                                                Form layout and validation patterns
+                                            </ListItem>
+                                            <ListItem href="/design-system" title="Design System">
+                                                Complete design system documentation
+                                            </ListItem>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+                            </NavigationMenuList>
+                        </NavigationMenu>
+
+                        <Link
+                            href="/about"
+                            className={cn(
+                                'nav-menu-item px-3',
+                                pathname === '/about' && 'theme-text-primary-color-100'
+                            )}
+                        >
+                            About
+                        </Link>
+                        <Link
+                            href="/contact"
+                            className={cn(
+                                'nav-menu-item px-3',
+                                pathname === '/contact' && 'theme-text-primary-color-100'
+                            )}
+                        >
+                            Contact
+                        </Link>
+                    </nav>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                        <ThemeToggle />
+                        <Button
+                            variant="default"
+                            size="sm"
+                            asChild
+                            className="hidden sm:inline-flex"
+                        >
+                            <Link href="/design-system">Get Started</Link>
+                        </Button>
+                        <MobileNav />
+                    </div>
+                </div>
+            </div>
+        </header>
+    )
+}
+
+const ListItem = ({
+    className,
+    title,
+    children,
+    href,
+    ...props
+}: {
+    className?: string
+    title: string
+    children: React.ReactNode
+    href: string
+}) => {
+    return (
+        <li>
+            <NavigationMenuLink asChild>
+                <Link
+                    href={href}
+                    className={cn(
+                        'block select-none space-y-1 theme-rounded p-3 leading-none no-underline outline-none transition-colors hover:theme-bg-primary-color-08 hover:text-accent-foreground focus:theme-bg-primary-color-08',
+                        className
+                    )}
+                    {...props}
+                >
+                    <div className="text-sm font-medium theme-fc-heading leading-none mb-1">
+                        {title}
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug theme-fc-light">
+                        {children}
+                    </p>
+                </Link>
+            </NavigationMenuLink>
+        </li>
+    )
+}
