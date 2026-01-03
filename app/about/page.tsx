@@ -25,7 +25,7 @@ export default function AboutPage() {
 
                 {/* Gradient Background */}
                 <div className="absolute inset-0 -z-10 overflow-hidden">
-                    <div className="absolute right-0 top-0 theme-bg-primary-color-05 blur-3xl w-[600px] h-[400px] rounded-full" />
+                    <div className="absolute right-0 top-0 bg-primary/5 blur-3xl w-[600px] h-[400px] rounded-full" />
                 </div>
             </section>
 
@@ -45,12 +45,12 @@ export default function AboutPage() {
                                 application, this framework provides the foundation you need with best practices baked in.
                             </p>
                         </div>
-                        <div className="box p-8 theme-bg-primary-color-05">
+                        <div className="box p-8 bg-primary/5">
                             <h3 className="theme-h4 mb-4">Key Features</h3>
                             <ul className="space-y-3">
                                 {keyFeatures.map((feature) => (
                                     <li key={feature} className="flex items-start gap-3">
-                                        <svg className="w-5 h-5 theme-text-primary-color-100 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span className="theme-fc-base">{feature}</span>
@@ -65,9 +65,9 @@ export default function AboutPage() {
                         <h2 className="theme-h2 text-center mb-12">Technology Stack</h2>
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {techStack.map((tech) => (
-                                <div key={tech.name} className="box p-6 text-center hover:theme-bg-primary-color-05 transition-colors">
-                                    <div className="theme-bg-primary-color-12 theme-rounded w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                        <tech.icon className="w-8 h-8 theme-text-primary-color-100" />
+                                <div key={tech.name} className="box p-6 text-center hover:bg-primary/5 transition-colors">
+                                    <div className="bg-primary/12 theme-rounded w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <tech.icon className="w-8 h-8 text-primary" />
                                     </div>
                                     <h3 className="theme-h5 mb-2">{tech.name}</h3>
                                     <p className="theme-fc-light text-sm">{tech.description}</p>
@@ -97,8 +97,8 @@ export default function AboutPage() {
                     <div className="grid md:grid-cols-3 gap-8">
                         {principles.map((principle) => (
                             <div key={principle.title} className="text-center">
-                                <div className="theme-bg-primary-color-12 theme-rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <principle.icon className="w-8 h-8 theme-text-primary-color-100" />
+                                <div className="bg-primary/12 theme-rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                    <principle.icon className="w-8 h-8 text-primary" />
                                 </div>
                                 <h3 className="theme-h4 mb-3">{principle.title}</h3>
                                 <p className="theme-fc-light">{principle.description}</p>

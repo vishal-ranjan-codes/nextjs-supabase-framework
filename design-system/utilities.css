@@ -36,7 +36,7 @@
 
 @utility theme-fc-heading {
   @apply text-fc-heading dark:text-fc-heading--dark;
-}  
+}
 
 @utility theme-fc-heading-light {
   @apply text-fc-heading-light dark:text-fc-heading-light--dark;
@@ -86,66 +86,16 @@
    Primary brand color text utilities
    ======================================================================== */
 
-@utility theme-text-primary-color-100 {
-  @apply text-primary-100 dark:text-primary-100--dark;
-}
-
-@utility theme-text-primary-color-75 {
-  @apply text-primary-75 dark:text-primary-75--dark;
-} 
-
-@utility theme-text-primary-color-50 {
-  @apply text-primary-50 dark:text-primary-50--dark;
-}
-
-@utility theme-text-primary-color-25 {
-  @apply text-primary-25 dark:text-primary-25--dark;
-} 
-
-@utility theme-text-primary-color-12 {
-  @apply text-primary-12 dark:text-primary-12--dark;
-}
-
-@utility theme-text-primary-color-08 {
-  @apply text-primary-08 dark:text-primary-08--dark;
-} 
-
-@utility theme-text-primary-color-05 {
-  @apply text-primary-05 dark:text-primary-05--dark;
-}
+/* Deprecated: Use text-primary utilities */
+/* Example: text-primary, text-primary/75 */
 
 /* ========================================================================
    BACKGROUND PRIMARY COLORS
    Primary brand color background utilities
    ======================================================================== */
 
-@utility theme-bg-primary-color-100 {
-  @apply bg-primary-100 dark:bg-primary-100--dark;
-}
-
-@utility theme-bg-primary-color-75 {
-  @apply bg-primary-75 dark:bg-primary-75--dark;
-} 
-
-@utility theme-bg-primary-color-50 {
-  @apply bg-primary-50 dark:bg-primary-50--dark;
-}
-
-@utility theme-bg-primary-color-25 {
-  @apply bg-primary-25 dark:bg-primary-25--dark;
-}
-
-@utility theme-bg-primary-color-12 {
-  @apply bg-primary-12 dark:bg-primary-12--dark;
-}
-
-@utility theme-bg-primary-color-08 {
-  @apply bg-primary-08 dark:bg-primary-08--dark;
-}
-
-@utility theme-bg-primary-color-05 {
-  @apply bg-primary-05 dark:bg-primary-05--dark;
-}
+/* Deprecated: Use bg-primary utilities */
+/* Example: bg-primary, bg-primary/75, bg-primary/50 */
 
 @utility theme-primary-btn-gradient {
   background: var(--color-primary-btn-gradient);
@@ -272,7 +222,7 @@
 
 @utility theme-bg-shade-70 {
   @apply bg-black-opacity-70 dark:bg-white-opacity-70;
-} 
+}
 
 @utility theme-bg-shade-80 {
   @apply bg-black-opacity-80 dark:bg-white-opacity-80;
@@ -280,7 +230,7 @@
 
 @utility theme-bg-shade-90 {
   @apply bg-black-opacity-90 dark:bg-white-opacity-90;
-} 
+}
 
 @utility theme-bg-shade-100 {
   @apply bg-black-opacity-100 dark:bg-white-opacity-100;
@@ -372,15 +322,15 @@
 
 @utility theme-h3 {
   @apply text-h3 font-medium theme-fc-heading;
-} 
+}
 
 @utility theme-h4 {
   @apply text-h4 font-medium theme-fc-heading;
-} 
+}
 
 @utility theme-h5 {
   @apply text-h5 font-bold theme-fc-heading;
-} 
+}
 
 @utility theme-h6 {
   @apply text-h6 font-bold uppercase theme-fc-heading;
@@ -397,7 +347,7 @@
  * Usage: <a class="nav-menu-item" href="/link">Menu Item</a>
  */
 @utility nav-menu-item {
-  @apply theme-fc-light hover:text-primary-100 dark:hover:theme-fc-heading no-underline p-[6px] text-base md:text-sm transition-all duration-300;
+  @apply theme-fc-light hover:text-primary dark:hover:theme-fc-heading no-underline p-[6px] text-base md:text-sm transition-all duration-300;
 }
 
 /**

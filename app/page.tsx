@@ -28,7 +28,7 @@ export default function HomePage() {
 
                 {/* Gradient Background */}
                 <div className="absolute inset-0 -z-10 overflow-hidden">
-                    <div className="absolute left-1/2 top-0 -translate-x-1/2 theme-bg-primary-color-05 blur-3xl w-[800px] h-[600px] rounded-full" />
+                    <div className="absolute left-1/2 top-0 -translate-x-1/2 bg-primary/5 blur-3xl w-[800px] h-[600px] rounded-full" />
                 </div>
             </section>
 
@@ -39,8 +39,8 @@ export default function HomePage() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature) => (
                             <div key={feature.title} className="box p-6">
-                                <div className="theme-bg-primary-color-12 theme-rounded w-12 h-12 flex items-center justify-center mb-4">
-                                    <feature.icon className="w-6 h-6 theme-text-primary-color-100" />
+                                <div className="bg-primary/12 theme-rounded w-12 h-12 flex items-center justify-center mb-4">
+                                    <feature.icon className="w-6 h-6 text-primary" />
                                 </div>
                                 <h3 className="theme-h4 mb-3">{feature.title}</h3>
                                 <p className="theme-fc-light">{feature.description}</p>
@@ -53,7 +53,7 @@ export default function HomePage() {
             {/* CTA Section */}
             <section className="py-16 md:py-24">
                 <div className="container">
-                    <div className="box p-12 text-center max-w-3xl mx-auto theme-bg-primary-color-05 theme-border-color">
+                    <div className="box p-12 text-center max-w-3xl mx-auto bg-primary/5 theme-border-color">
                         <h2 className="theme-h2 mb-4">Ready to Get Started?</h2>
                         <p className="theme-fc-light text-lg mb-8">
                             Clone this repository and start building your next great application.

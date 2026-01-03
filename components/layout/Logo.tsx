@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Logo() {
     return (
         <Link href="/" className="flex items-center justify-center">
-            <div className="theme-bg-primary-color-100 theme-rounded w-10 h-10 flex items-center justify-center">
+            <div className="bg-primary theme-rounded w-10 h-10 flex items-center justify-center">
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"

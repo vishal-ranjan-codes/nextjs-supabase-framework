@@ -30,38 +30,38 @@ const buttonVariants = cva(
       variant: {
         // Primary CTA - uses custom theme colors
         default:
-          "theme-bg-primary-color-100 dark:theme-primary-btn-gradient text-white button-hover-darker border-primary-100 dark:border-primary-100--dark",
-        
+          "bg-primary text-white button-hover-darker border-primary dark:border-primary",
+
         // Destructive - integrated with theme
         destructive:
-          "theme-bg-destructive text-white hover:opacity-60 border-red-600",
-        
+          "bg-destructive text-white hover:opacity-60 border-destructive",
+
         // Outline - transparent with border, white styling in dark theme
         outline:
           "bg-transparent hover:theme-bg-color-dark theme-fc-base hover:theme-fc-heading theme-border-color dark:border-white-opacity-20 dark:text-white-opacity-80 dark:hover:bg-black-opacity-10 dark:hover:border-white-opacity-40 dark:hover:text-white-opacity-100",
-        
+
         // Secondary - subtle background
         secondary:
           "bg-black-opacity-05 hover:bg-black-opacity-10 border-0 dark:bg-white-opacity-05 dark:hover:bg-white-opacity-10 theme-fc-base hover:theme-fc-heading",
-        
+
         // Ghost - hover-only background
         ghost:
           "hover:bg-black-opacity-05 dark:hover:bg-white-opacity-05 theme-fc-heading-light hover:theme-fc-heading border-transparent",
-        
+
         // White - light button on dark backgrounds
         white:
           "bg-white-opacity-90 hover:bg-white-opacity-100 text-fc-base hover:text-fc-heading border-transparent",
-        
+
         // Link - text-only with underline
-        link: "text-primary-100 dark:text-primary-100--dark underline-offset-4 hover:underline",
-        
+        link: "text-primary dark:text-primary underline-offset-4 hover:underline",
+
         // Outline White - white border and text for dark backgrounds
         "outline-white":
           "bg-transparent border-white-opacity-20 text-white-opacity-80 hover:bg-black-opacity-10 hover:border-white-opacity-40 hover:text-white-opacity-100 border-2 transition-all duration-300",
-        
+
         // Primary Dark White - default in light theme, white variant in dark theme
         "primary-dark-white":
-          "bg-primary-100 text-white hover:bg-primary-100/90 border-primary-100 dark:bg-white/90 dark:hover:bg-white dark:text-gray-900 dark:hover:text-gray-800 dark:border-transparent",
+          "bg-primary text-white hover:bg-primary/90 border-primary dark:bg-white/90 dark:hover:bg-white dark:text-gray-900 dark:hover:text-gray-800 dark:border-transparent",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

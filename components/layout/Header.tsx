@@ -26,7 +26,7 @@ export default function Header() {
                     {/* Logo and Site Title */}
                     <div className="flex items-center gap-3">
                         <Logo />
-                        <Link href="/" className="theme-fc-heading hover:theme-text-primary-color-100 transition-colors">
+                        <Link href="/" className="theme-fc-heading hover:text-primary transition-colors">
                             <span className="font-semibold text-lg hidden sm:inline">
                                 Framework
                             </span>
@@ -112,7 +112,7 @@ export default function Header() {
                             href="/about"
                             className={cn(
                                 'nav-menu-item px-3',
-                                pathname === '/about' && 'theme-text-primary-color-100'
+                                pathname === '/about' && 'text-primary'
                             )}
                         >
                             About
@@ -121,7 +121,7 @@ export default function Header() {
                             href="/contact"
                             className={cn(
                                 'nav-menu-item px-3',
-                                pathname === '/contact' && 'theme-text-primary-color-100'
+                                pathname === '/contact' && 'text-primary'
                             )}
                         >
                             Contact
@@ -165,7 +165,7 @@ const ListItem = ({
                 <Link
                     href={href}
                     className={cn(
-                        'block select-none space-y-1 theme-rounded p-3 leading-none no-underline outline-none transition-colors hover:theme-bg-primary-color-08 hover:text-accent-foreground focus:theme-bg-primary-color-08',
+                        'block select-none space-y-1 theme-rounded p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/8 hover:text-accent-foreground focus:bg-primary/8',
                         className
                     )}
                     {...props}
