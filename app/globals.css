@@ -5,254 +5,160 @@
  * 
  * Framework: Tailwind CSS v4.1.4
  * Dark Mode: Class-based (.dark)
- * Color System: CSS Custom Properties with --dark suffix pattern
+ * Color System: CSS Custom Properties with automatic switching
  * 
  * STRUCTURE:
  * 1. Tailwind Import & Configuration
- * 2. Design Tokens (@theme)
- * 3. Custom Utility Classes
- * 4. Component Base Styles
- * 5. Layout & Page Styles
+ * 2. CSS Variable Definitions (:root & .dark)
+ * 3. Design Tokens (@theme) mapping
+ * 4. Custom Utility Classes
  * 
- * USAGE IN OTHER PROJECTS:
- * - Copy @theme block for design tokens
- * - Copy @utility blocks for reusable patterns
- * - Update color values to match brand
- * - Adjust typography scale as needed
  * =============================================================================
  */
 
 @import 'tailwindcss';
 
-/* @import 'sonner/dist/styles.css'; */
-
 @custom-variant dark (&:is(.dark *));
 
 /* ========================================================================
-   LAYOUT CONFIGURATION
-   Global layout variables used throughout the design system
+   CSS VARIABLES - THEME DEFINITIONS
+   Define values for Light and Dark modes here via standard CSS variables.
+   The @theme block references these variables.
    ======================================================================== */
+
 :root {
-  --header-height: 80px;
-  --theme-rounded: 10px;
-  --theme-rounded-sm: 6px;
-  /* Sidebar variables mapped to design system tokens */
-  --sidebar: var(--color-layout-background-dark);
-  --sidebar-foreground: var(--color-fc-base);
-  --sidebar-primary: var(--color-primary-100);
-  --sidebar-primary-foreground: var(--color-primary-100);
-  --sidebar-accent: var(--color-layout-foreground);
-  --sidebar-accent-foreground: var(--color-fc-base);
-  --sidebar-border: var(--color-layout-border);
-  --sidebar-ring: var(--color-primary-50);
-
-  --sidebar-width-desktop: 320px;
-}
-
-/* ========================================================================
-   SMOOTH SCROLL BEHAVIOR
-   Enable smooth scrolling for better UX
-   ======================================================================== */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Respect user preference for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* Scroll margin for sections to account for fixed header */
-.scroll-mt-20 {
-  scroll-margin-top: 5rem;
-}
-
-/* Font family utility */
-.font-inter {
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-}
-
-@theme {
-  /* ========================================================================
-     DESIGN TOKENS - LIGHT THEME
-     ======================================================================== */
-
   /* ------------------------------------------------------------------------ 
-     Primary Brand Colors
+     Primary Brand Colors (Light Mode)
      Base: #1877F2 (Facebook Blue)
-     Usage: CTAs, links, focus states, brand accents
      ------------------------------------------------------------------------ */
   --color-primary-100: #1877F2;
-  /* Full opacity - Primary buttons */
+  /* Full opacity */
   --color-primary-75: #1877F2BF;
-  /* 75% opacity - Hover states */
+  /* 75% opacity */
   --color-primary-50: #1877F280;
-  /* 50% opacity - Disabled states */
+  /* 50% opacity */
   --color-primary-25: #1877F240;
-  /* 25% opacity - Subtle backgrounds */
+  /* 25% opacity */
   --color-primary-12: #1877F21F;
-  /* 12% opacity - Accent backgrounds */
+  /* 12% opacity */
   --color-primary-08: #1877F214;
-  /* 8% opacity - Hover backgrounds */
+  /* 8% opacity */
   --color-primary-05: #1877F20D;
-  /* 5% opacity - Very subtle tints */
+  /* 5% opacity */
+
+  --color-primary-btn-gradient: linear-gradient(230deg, #1877F2 15%, #4A9FFF 100%);
 
   /* ------------------------------------------------------------------------ 
-     Typography Colors (fc = font-color)
-     Usage: Text hierarchy and readability
+     Typography Colors (Light Mode)
      ------------------------------------------------------------------------ */
   --color-fc-heading: #262626;
-  /* Primary headings - highest contrast */
+  /* Primary headings */
   --color-fc-heading-light: #363636;
   /* Secondary headings */
   --color-fc-base: #4D4D4D;
-  /* Body text - optimal readability */
+  /* Body text */
   --color-fc-light: #8C8C8C;
-  /* Muted text - labels, captions */
+  /* Muted text */
   --color-fc-lighter: #BFBFBF;
-  /* Placeholder text, disabled text */
+  /* Placeholder/Disabled */
 
   /* ------------------------------------------------------------------------ 
-     Layout Colors - Backgrounds
-     Usage: Page and section backgrounds
+     Layout Colors (Light Mode)
      ------------------------------------------------------------------------ */
   --color-layout-background: #F5F5F5;
   /* Page background */
   --color-layout-background-dark: #eeeeee;
-  /* Darker background sections */
-
-  /* ------------------------------------------------------------------------ 
-     Layout Colors - Foregrounds
-     Usage: Cards, panels, elevated surfaces
-     ------------------------------------------------------------------------ */
-  --color-layout-foreground: #fff;
-  /* Cards, modals, dropdowns */
-  --color-layout-foreground-dark: #FAFAFA;
-  /* Subtle card variations */
-
-  /* ------------------------------------------------------------------------ 
-     Layout Colors - Borders
-     Usage: Dividers, outlines, separators
-     ------------------------------------------------------------------------ */
-  --color-layout-border: #dfdfdf;
-  /* Standard borders */
-  --color-layout-border-light: #F0F0F0;
-  /* Subtle dividers */
-
-  /* ========================================================================
-     DESIGN TOKENS - DARK THEME
-     Suffix: --dark (automatically applied when .dark class is present)
-     Theme: Warm orange-brown with high contrast
-     ======================================================================== */
-
-  /* ------------------------------------------------------------------------ 
-     Primary Brand Colors (Dark Mode)
-     Base: #4A9FFF (Brighter blue for dark backgrounds)
-     ------------------------------------------------------------------------ */
-  --color-primary-100--dark: #4A9FFF;
-  --color-primary-75--dark: #4A9FFFBF;
-  --color-primary-50--dark: #4A9FFF80;
-  --color-primary-25--dark: #4A9FFF40;
-  --color-primary-12--dark: #4A9FFF1F;
-  --color-primary-08--dark: #4A9FFF14;
-  --color-primary-05--dark: #4A9FFF0D;
-
-  /* ------------------------------------------------------------------------ 
-     Typography Colors (Dark Mode)
-     Neutral whites and grays for comfortable reading
-     ------------------------------------------------------------------------ */
-  --color-fc-heading--dark: #FAFAFA;
-  /* Primary headings - highest contrast */
-  --color-fc-heading-light--dark: #E8E8E8;
-  /* Secondary headings */
-  --color-fc-base--dark: #CCCCCC;
-  /* Body text - optimal readability */
-  --color-fc-light--dark: #A0A0A0;
-  /* Muted text - labels, captions */
-  --color-fc-lighter--dark: #808080;
-  /* Placeholder text, disabled text */
-
-  /* ------------------------------------------------------------------------ 
-     Layout Colors - Backgrounds (Dark Mode)
-     Neutral dark grays for clean, modern appearance
-     ------------------------------------------------------------------------ */
-  --color-layout-background--dark: #0A0A0A;
-  /* Deep neutral dark */
-  --color-layout-background-dark--dark: #050505;
   /* Darker sections */
-
-  /* ------------------------------------------------------------------------ 
-     Layout Colors - Foregrounds (Dark Mode)
-     Neutral dark surfaces for cards and panels
-     ------------------------------------------------------------------------ */
-  --color-layout-foreground--dark: #1A1A1A;
-  /* Card background */
-  --color-layout-foreground-dark--dark: #242424;
+  --color-layout-foreground: #fff;
+  /* Cards/Panels */
+  --color-layout-foreground-dark: #FAFAFA;
   /* Elevated cards */
+  --color-layout-border: #dfdfdf;
+  /* Borders */
+  --color-layout-border-light: #F0F0F0;
+  /* Dividers */
 
   /* ------------------------------------------------------------------------ 
-     Layout Colors - Borders (Dark Mode)
-     Neutral gray borders maintaining hierarchy
+     UI Component Tokens (Light Mode - Shadcn)
      ------------------------------------------------------------------------ */
-  --color-layout-border--dark: #333333;
-  /* Standard borders */
-  --color-layout-border-light--dark: #2A2A2A;
-  /* Subtle dividers */
+  --radius: 0.6rem;
+  --theme-rounded: 10px;
+  --theme-rounded-sm: 6px;
 
-  /* ========================================================================
-     SPECIAL PURPOSE COLORS
-     ======================================================================== */
-
-  /* Gradient for primary CTA buttons */
-  --color-primary-btn-gradient: linear-gradient(230deg, #1877F2 15%, #4A9FFF 100%);
-
-  /* Additional theme colors (can be customized per project) */
-  --color-theme-bg-dark: #EA5A36;
-  --color-theme-bg-darker: #D24B3E;
-  --color-theme-fg-dark: #185B50;
-  --color-layout-fg-darker: #114f45;
-
-  /* ========================================================================
-     OPACITY UTILITIES
-     White and black overlays for layering effects
-     ======================================================================== */
-
-  /* White opacity variants (for dark backgrounds) */
+  /* Opacity Utilities (Constant) */
   --color-white-opacity-03: rgb(255 255 255 / 3%);
   --color-white-opacity-05: rgb(255 255 255 / 5%);
   --color-white-opacity-10: rgb(255 255 255 / 10%);
-  --color-white-opacity-20: rgb(255 255 255 / 20%);
-  --color-white-opacity-30: rgb(255 255 255 / 30%);
-  --color-white-opacity-40: rgb(255 255 255 / 40%);
-  --color-white-opacity-50: rgb(255 255 255 / 50%);
-  --color-white-opacity-60: rgb(255 255 255 / 60%);
-  --color-white-opacity-70: rgb(255 255 255 / 70%);
-  --color-white-opacity-80: rgb(255 255 255 / 80%);
-  --color-white-opacity-90: rgb(255 255 255 / 90%);
   --color-white-opacity-100: rgb(255 255 255 / 100%);
-
-  /* Black opacity variants (for light backgrounds) */
   --color-black-opacity-03: rgb(0 0 0 / 3%);
   --color-black-opacity-05: rgb(0 0 0 / 5%);
   --color-black-opacity-10: rgb(0 0 0 / 10%);
-  --color-black-opacity-20: rgb(0 0 0 / 20%);
-  --color-black-opacity-30: rgb(0 0 0 / 30%);
-  --color-black-opacity-40: rgb(0 0 0 / 40%);
-  --color-black-opacity-50: rgb(0 0 0 / 50%);
-  --color-black-opacity-60: rgb(0 0 0 / 60%);
-  --color-black-opacity-70: rgb(0 0 0 / 70%);
-  --color-black-opacity-80: rgb(0 0 0 / 80%);
-  --color-black-opacity-90: rgb(0 0 0 / 90%);
   --color-black-opacity-100: rgb(0 0 0 / 100%);
+  --header-height: 80px;
+}
 
-  /* ========================================================================
-     SHADCN/UI COMPATIBILITY LAYER
-     Maps custom tokens to shadcn component expectations
-     Automatically switches between light/dark via utility classes
-     ======================================================================== */
+.dark {
+  /* ------------------------------------------------------------------------ 
+     Primary Brand Colors (Dark Mode)
+     Base: #4A9FFF (Brighter Blue)
+     ------------------------------------------------------------------------ */
+  --color-primary-100: #4A9FFF;
+  --color-primary-75: #4A9FFFBF;
+  --color-primary-50: #4A9FFF80;
+  --color-primary-25: #4A9FFF40;
+  --color-primary-12: #4A9FFF1F;
+  --color-primary-08: #4A9FFF14;
+  --color-primary-05: #4A9FFF0D;
 
+  /* ------------------------------------------------------------------------ 
+     Typography Colors (Dark Mode)
+     ------------------------------------------------------------------------ */
+  --color-fc-heading: #FAFAFA;
+  --color-fc-heading-light: #E8E8E8;
+  --color-fc-base: #CCCCCC;
+  --color-fc-light: #A0A0A0;
+  --color-fc-lighter: #808080;
+
+  /* ------------------------------------------------------------------------ 
+     Layout Colors (Dark Mode)
+     ------------------------------------------------------------------------ */
+  --color-layout-background: #0A0A0A;
+  --color-layout-background-dark: #050505;
+  --color-layout-foreground: #1A1A1A;
+  --color-layout-foreground-dark: #242424;
+  --color-layout-border: #333333;
+  --color-layout-border-light: #2A2A2A;
+}
+
+/* ========================================================================
+   TAILWIND THEME CONFIGURATION
+   Map tokens to the CSS variables defined above.
+   ======================================================================== */
+@theme {
+  /* Colors */
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-75: var(--color-primary-75);
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-25: var(--color-primary-25);
+  --color-primary-12: var(--color-primary-12);
+  --color-primary-08: var(--color-primary-08);
+  --color-primary-05: var(--color-primary-05);
+  --color-primary-btn-gradient: var(--color-primary-btn-gradient);
+
+  --color-fc-heading: var(--color-fc-heading);
+  --color-fc-heading-light: var(--color-fc-heading-light);
+  --color-fc-base: var(--color-fc-base);
+  --color-fc-light: var(--color-fc-light);
+  --color-fc-lighter: var(--color-fc-lighter);
+
+  --color-layout-background: var(--color-layout-background);
+  --color-layout-background-dark: var(--color-layout-background-dark);
+  --color-layout-foreground: var(--color-layout-foreground);
+  --color-layout-foreground-dark: var(--color-layout-foreground-dark);
+  --color-layout-border: var(--color-layout-border);
+  --color-layout-border-light: var(--color-layout-border-light);
+
+  /* Shadcn / UI Tokens - Mapped to our Design System */
   --color-background: var(--color-layout-background);
   --color-foreground: var(--color-fc-heading);
   --color-card: var(--color-layout-foreground);
@@ -273,87 +179,36 @@ html {
   --color-input: var(--color-layout-border);
   --color-ring: var(--color-primary-50);
 
-  /* ========================================================================
-     SHADCN/UI COMPATIBILITY LAYER - DARK THEME
-     Maps custom tokens to shadcn component expectations for dark mode
-     ======================================================================== */
-
-  --color-background--dark: var(--color-layout-background--dark);
-  --color-foreground--dark: var(--color-fc-heading--dark);
-  --color-card--dark: var(--color-layout-foreground--dark);
-  --color-card-foreground--dark: var(--color-fc-heading--dark);
-  --color-popover--dark: var(--color-layout-foreground--dark);
-  --color-popover-foreground--dark: var(--color-fc-heading--dark);
-  --color-primary--dark: var(--color-primary-100--dark);
-  --color-primary-foreground--dark: #FFFFFF;
-  --color-secondary--dark: var(--color-layout-background-dark--dark);
-  --color-secondary-foreground--dark: var(--color-fc-heading--dark);
-  --color-muted--dark: var(--color-layout-background-dark--dark);
-  --color-muted-foreground--dark: var(--color-fc-light--dark);
-  --color-accent--dark: var(--color-primary-12--dark);
-  --color-accent-foreground--dark: var(--color-fc-heading--dark);
-  --color-destructive--dark: #DC2626;
-  --color-destructive-foreground--dark: #FFFFFF;
-  --color-border--dark: var(--color-layout-border--dark);
-  --color-input--dark: var(--color-layout-border--dark);
-  --color-ring--dark: var(--color-primary-50--dark);
-
-  /* ========================================================================
-     TYPOGRAPHY SCALE
-     Consistent text sizing across the design system
-     ======================================================================== */
-
-  --text-h1: 2rem;
-  /* 32px - Page titles */
-  --text-h2: 1.75rem;
-  /* 28px - Section headings */
-  --text-h3: 1.5rem;
-  /* 24px - Subsection headings */
-  --text-h4: 1.25rem;
-  /* 20px - Card headings */
-  --text-h5: 1rem;
-  /* 16px - Small headings */
-  --text-h6: 0.875rem;
-  /* 14px - Overline text */
-
-  /* ========================================================================
-     ANIMATIONS
-     Component-specific animations
-     ======================================================================== */
-
+  /* Animations */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  /* Typography Scale */
+  --text-h1: 2rem;
+  --text-h2: 1.75rem;
+  --text-h3: 1.5rem;
+  --text-h4: 1.25rem;
+  --text-h5: 1rem;
+  --text-h6: 0.875rem;
 }
 
 /* ========================================================================
-   KEYFRAMES
-   Animation definitions for components
+   BASE STYLES
    ======================================================================== */
+html {
+  scroll-behavior: smooth;
+}
 
-@keyframes accordion-down {
-  from {
-    height: 0;
-  }
-
-  to {
-    height: var(--radix-accordion-content-height);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-  }
-
-  to {
-    height: 0;
-  }
+.font-inter {
+  font-family: var(--font-inter), sans-serif;
 }
 
-/* ========================================================================
-   TAILWIND V4 COMPATIBILITY
-   Border color fix for v4 compatibility
-   ======================================================================== */
 @layer base {
 
   *,
@@ -367,392 +222,168 @@ html {
 
 /* ========================================================================
    UTILITY CLASSES
-   Reusable utility classes that automatically switch between light/dark modes
+   Simplified to rely on auto-switching CSS variables.
    ======================================================================== */
 
-/* ========================================================================
-   COLOR UTILITIES - FONT COLORS
-   Automatically switch between light/dark modes
-   Usage: <p class="theme-fc-base">Body text</p>
-   ======================================================================== */
-
-@utility theme-fc-base {
-  @apply text-fc-base dark:text-fc-base--dark;
-}
-
-@utility theme-fc-light {
-  @apply text-fc-light dark:text-fc-light--dark;
-}
-
-@utility theme-fc-lighter {
-  @apply text-fc-lighter dark:text-fc-lighter--dark;
-}
-
-@utility theme-fc-heading {
-  @apply text-fc-heading dark:text-fc-heading--dark;
-}
-
-@utility theme-fc-heading-light {
-  @apply text-fc-heading-light dark:text-fc-heading-light--dark;
-}
-
-/* ========================================================================
-   COLOR UTILITIES - BACKGROUNDS
-   Page and section background colors
-   ======================================================================== */
-
+/* Backgrounds */
 @utility theme-bg-color {
-  @apply bg-layout-background dark:bg-layout-background--dark;
+  background-color: var(--color-layout-background);
 }
 
 @utility theme-bg-color-dark {
-  @apply bg-layout-background-dark dark:bg-layout-background-dark--dark;
+  background-color: var(--color-layout-background-dark);
 }
 
-/* ========================================================================
-   COLOR UTILITIES - FOREGROUNDS (CARDS/PANELS)
-   Elevated surface colors
-   ======================================================================== */
-
 @utility theme-fg-color {
-  @apply bg-layout-foreground dark:bg-layout-foreground--dark;
+  background-color: var(--color-layout-foreground);
 }
 
 @utility theme-fg-color-dark {
-  @apply bg-layout-foreground-dark dark:bg-layout-foreground-dark--dark;
+  background-color: var(--color-layout-foreground-dark);
 }
 
-/* ========================================================================
-   COLOR UTILITIES - BORDERS
-   Border colors for dividers and outlines
-   ======================================================================== */
+/* Text Colors */
+@utility theme-fc-base {
+  color: var(--color-fc-base);
+}
 
+@utility theme-fc-light {
+  color: var(--color-fc-light);
+}
+
+@utility theme-fc-lighter {
+  color: var(--color-fc-lighter);
+}
+
+@utility theme-fc-heading {
+  color: var(--color-fc-heading);
+}
+
+@utility theme-fc-heading-light {
+  color: var(--color-fc-heading-light);
+}
+
+/* Borders */
 @utility theme-border-color {
-  @apply border-layout-border dark:border-layout-border--dark;
+  border-color: var(--color-layout-border);
 }
 
 @utility theme-border-color-light {
-  @apply border-layout-border-light dark:border-layout-border-light--dark;
+  border-color: var(--color-layout-border-light);
 }
 
-/* Text Primary Colors - Explicit CSS Fallback */
-.theme-text-primary-color-100 {
-  color: var(--color-primary-100);
-}
-
-.dark .theme-text-primary-color-100 {
-  color: var(--color-primary-100--dark);
-}
-
-.theme-text-primary-color-75 {
-  color: var(--color-primary-75);
-}
-
-.dark .theme-text-primary-color-75 {
-  color: var(--color-primary-75--dark);
-}
-
-.theme-text-primary-color-50 {
-  color: var(--color-primary-50);
-}
-
-.dark .theme-text-primary-color-50 {
-  color: var(--color-primary-50--dark);
-}
-
-.theme-text-primary-color-25 {
-  color: var(--color-primary-25);
-}
-
-.dark .theme-text-primary-color-25 {
-  color: var(--color-primary-25--dark);
-}
-
-.theme-text-primary-color-12 {
-  color: var(--color-primary-12);
-}
-
-.dark .theme-text-primary-color-12 {
-  color: var(--color-primary-12--dark);
-}
-
-.theme-text-primary-color-08 {
-  color: var(--color-primary-08);
-}
-
-.dark .theme-text-primary-color-08 {
-  color: var(--color-primary-08--dark);
-}
-
-.theme-text-primary-color-05 {
-  color: var(--color-primary-05);
-}
-
-.dark .theme-text-primary-color-05 {
-  color: var(--color-primary-05--dark);
-}
-
-/* Background Primary Colors - Explicit CSS Fallback */
+/* Primary Colors - Simplified! */
+/* No need for .dark overrides - the var() switches automatically */
 .theme-bg-primary-color-100 {
   background-color: var(--color-primary-100);
-}
-
-.dark .theme-bg-primary-color-100 {
-  background-color: var(--color-primary-100--dark);
 }
 
 .theme-bg-primary-color-75 {
   background-color: var(--color-primary-75);
 }
 
-.dark .theme-bg-primary-color-75 {
-  background-color: var(--color-primary-75--dark);
-}
-
 .theme-bg-primary-color-50 {
   background-color: var(--color-primary-50);
-}
-
-.dark .theme-bg-primary-color-50 {
-  background-color: var(--color-primary-50--dark);
 }
 
 .theme-bg-primary-color-25 {
   background-color: var(--color-primary-25);
 }
 
-.dark .theme-bg-primary-color-25 {
-  background-color: var(--color-primary-25--dark);
-}
-
 .theme-bg-primary-color-12 {
   background-color: var(--color-primary-12);
-}
-
-.dark .theme-bg-primary-color-12 {
-  background-color: var(--color-primary-12--dark);
 }
 
 .theme-bg-primary-color-08 {
   background-color: var(--color-primary-08);
 }
 
-.dark .theme-bg-primary-color-08 {
-  background-color: var(--color-primary-08--dark);
-}
-
 .theme-bg-primary-color-05 {
   background-color: var(--color-primary-05);
 }
 
-.dark .theme-bg-primary-color-05 {
-  background-color: var(--color-primary-05--dark);
+.theme-text-primary-color-100 {
+  color: var(--color-primary-100);
 }
 
-.theme-primary-btn-gradient {
+.theme-text-primary-color-75 {
+  color: var(--color-primary-75);
+}
+
+.theme-text-primary-color-50 {
+  color: var(--color-primary-50);
+}
+
+.theme-text-primary-color-25 {
+  color: var(--color-primary-25);
+}
+
+.theme-text-primary-color-12 {
+  color: var(--color-primary-12);
+}
+
+.theme-text-primary-color-08 {
+  color: var(--color-primary-08);
+}
+
+.theme-text-primary-color-05 {
+  color: var(--color-primary-05);
+}
+
+@utility theme-primary-btn-gradient {
   background: var(--color-primary-btn-gradient);
 }
 
-/* ========================================================================
-   SHADCN COMPATIBILITY UTILITIES
-   Additional utilities for shadcn components
-   ======================================================================== */
-
+/* Shadcn Compatibility Utilities */
 @utility theme-bg-card {
-  @apply bg-layout-foreground dark:bg-layout-foreground--dark;
+  background-color: var(--color-card);
 }
 
 @utility theme-bg-popover {
-  @apply bg-layout-foreground dark:bg-layout-foreground--dark;
+  background-color: var(--color-popover);
 }
 
 @utility theme-bg-secondary {
-  @apply bg-layout-background-dark dark:bg-layout-background-dark--dark;
+  background-color: var(--color-secondary);
 }
 
 @utility theme-text-secondary {
-  @apply text-fc-heading dark:text-fc-heading--dark;
+  color: var(--color-secondary-foreground);
 }
 
 @utility theme-bg-muted {
-  @apply bg-layout-background-dark dark:bg-layout-foreground--dark;
+  background-color: var(--color-muted);
 }
 
 @utility theme-text-muted {
-  @apply text-fc-light dark:text-fc-light--dark;
+  color: var(--color-muted-foreground);
 }
 
 @utility theme-bg-accent {
-  @apply bg-primary-12 dark:bg-primary-12--dark;
+  background-color: var(--color-accent);
 }
 
 @utility theme-text-accent {
-  @apply text-fc-heading dark:text-fc-heading--dark;
+  color: var(--color-accent-foreground);
 }
 
 @utility theme-bg-destructive {
-  @apply bg-red-600 dark:bg-red-600;
+  background-color: var(--color-destructive);
 }
 
 @utility theme-text-destructive {
-  @apply text-red-600 dark:text-red-500;
+  color: var(--color-destructive-foreground);
 }
 
 @utility theme-border-input {
-  @apply border-layout-border dark:border-layout-border--dark;
+  border-color: var(--color-input);
 }
 
 @utility theme-ring {
-  @apply ring-primary-50 dark:ring-primary-50--dark;
+  --tw-ring-color: var(--color-ring);
 }
 
-/* Border Radius */
-@utility theme-rounded {
-  border-radius: var(--theme-rounded);
-}
-
-@utility theme-rounded-sm {
-  border-radius: var(--theme-rounded-sm);
-}
-
-@utility theme-rounded-t {
-  border-radius: var(--theme-rounded) var(--theme-rounded) 0 0;
-}
-
-@utility theme-rounded-b {
-  border-radius: 0 0 var(--theme-rounded) var(--theme-rounded);
-}
-
-@utility theme-rounded-l {
-  border-radius: var(--theme-rounded) 0 0 var(--theme-rounded);
-}
-
-@utility theme-rounded-r {
-  border-radius: 0 var(--theme-rounded) var(--theme-rounded) 0;
-}
-
-/* Shades */
-
-@utility theme-bg-shade-3 {
-  @apply bg-black-opacity-03 dark:bg-white-opacity-03;
-}
-
-@utility theme-bg-shade-5 {
-  @apply bg-black-opacity-05 dark:bg-white-opacity-05;
-}
-
-@utility theme-bg-shade-10 {
-  @apply bg-black-opacity-10 dark:bg-white-opacity-10;
-}
-
-@utility theme-bg-shade-20 {
-  @apply bg-black-opacity-20 dark:bg-white-opacity-20;
-}
-
-@utility theme-bg-shade-30 {
-  @apply bg-black-opacity-30 dark:bg-white-opacity-30;
-}
-
-@utility theme-bg-shade-40 {
-  @apply bg-black-opacity-40 dark:bg-white-opacity-40;
-}
-
-@utility theme-bg-shade-50 {
-  @apply bg-black-opacity-50 dark:bg-white-opacity-50;
-}
-
-@utility theme-bg-shade-60 {
-  @apply bg-black-opacity-60 dark:bg-white-opacity-60;
-}
-
-@utility theme-bg-shade-70 {
-  @apply bg-black-opacity-70 dark:bg-white-opacity-70;
-}
-
-@utility theme-bg-shade-80 {
-  @apply bg-black-opacity-80 dark:bg-white-opacity-80;
-}
-
-@utility theme-bg-shade-90 {
-  @apply bg-black-opacity-90 dark:bg-white-opacity-90;
-}
-
-@utility theme-bg-shade-100 {
-  @apply bg-black-opacity-100 dark:bg-white-opacity-100;
-}
-
-/* Button Hover Dark */
-@utility button-hover-dark {
-  &:hover {
-    box-shadow: rgb(0 0 0 / 10%) 0px 0px 0px 9999px inset;
-  }
-}
-
-@utility button-hover-darker {
-  &:hover {
-    box-shadow: rgb(0 0 0 / 15%) 0px 0px 0px 9999px inset;
-  }
-}
-
-/* ========================================================================
-   LAYOUT UTILITIES - CONTAINERS
-   Responsive container widths for consistent layouts
-   ======================================================================== */
-
-/**
- * Standard container - max-width: 1280px (80rem)
- * Usage: <div class="container">...</div>
- */
-@utility container {
-  @apply max-w-7xl mx-auto px-4 sm:px-7;
-}
-
-/**
- * Small container - max-width: 512px (32rem)
- * Usage: Forms, narrow content
- */
-@utility container-max-sm {
-  @apply max-w-lg mx-auto px-4 sm:px-7;
-}
-
-/**
- * Tablet container - max-width: 768px (48rem)
- * Usage: Tablet-optimized layouts
- */
-@utility container-max-tab {
-  @apply max-w-3xl mx-auto px-4 sm:px-7;
-}
-
-/**
- * Medium container - max-width: 896px (56rem)
- * Usage: Medium-width content
- */
-@utility container-max-md {
-  @apply max-w-4xl mx-auto px-4 sm:px-7;
-}
-
-/**
- * Large container - max-width: 1024px (64rem)
- * Usage: Wide content areas
- */
-@utility container-max-lg {
-  @apply max-w-5xl mx-auto px-4 sm:px-7;
-}
-
-/**
- * Extra large container - max-width: 1280px (80rem)
- * Usage: Maximum content width
- */
-@utility container-max-xl {
-  @apply max-w-7xl mx-auto px-4 sm:px-7;
-}
-
-/* ========================================================================
-   TYPOGRAPHY UTILITIES
-   Pre-styled heading classes combining size, weight, and color
-   Usage: <h1 class="theme-h1">Page Title</h1>
-   ======================================================================== */
-
+/* Typography Scale */
 @utility theme-h1 {
   @apply text-h1 font-medium theme-fc-heading;
 }
@@ -777,288 +408,190 @@ html {
   @apply text-h6 font-bold uppercase theme-fc-heading;
 }
 
-/* ========================================================================
-   COMPONENT UTILITIES
-   Reusable patterns for common components
-   ======================================================================== */
+/* Border Radius Variants */
+@utility theme-rounded {
+  border-radius: var(--theme-rounded);
+}
 
-/**
- * Navigation menu item styling
- * Includes: colors, spacing, transitions, hover states
- * Usage: <a class="nav-menu-item" href="/link">Menu Item</a>
- */
+@utility theme-rounded-sm {
+  border-radius: var(--theme-rounded-sm);
+}
+
+@utility theme-rounded-t {
+  border-radius: var(--theme-rounded) var(--theme-rounded) 0 0;
+}
+
+@utility theme-rounded-b {
+  border-radius: 0 0 var(--theme-rounded) var(--theme-rounded);
+}
+
+@utility theme-rounded-l {
+  border-radius: var(--theme-rounded) 0 0 var(--theme-rounded);
+}
+
+@utility theme-rounded-r {
+  border-radius: 0 var(--theme-rounded) var(--theme-rounded) 0;
+}
+
+/* Shades (Opacity Overlays) */
+@utility theme-bg-shade-3 {
+  background-color: var(--color-black-opacity-03);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-03);
+  }
+}
+
+@utility theme-bg-shade-5 {
+  background-color: var(--color-black-opacity-05);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-05);
+  }
+}
+
+@utility theme-bg-shade-10 {
+  background-color: var(--color-black-opacity-10);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-10);
+  }
+}
+
+@utility theme-bg-shade-20 {
+  background-color: var(--color-black-opacity-20);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-20);
+  }
+}
+
+@utility theme-bg-shade-30 {
+  background-color: var(--color-black-opacity-30);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-30);
+  }
+}
+
+@utility theme-bg-shade-40 {
+  background-color: var(--color-black-opacity-40);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-40);
+  }
+}
+
+@utility theme-bg-shade-50 {
+  background-color: var(--color-black-opacity-50);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-50);
+  }
+}
+
+@utility theme-bg-shade-60 {
+  background-color: var(--color-black-opacity-60);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-60);
+  }
+}
+
+@utility theme-bg-shade-70 {
+  background-color: var(--color-black-opacity-70);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-70);
+  }
+}
+
+@utility theme-bg-shade-80 {
+  background-color: var(--color-black-opacity-80);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-80);
+  }
+}
+
+@utility theme-bg-shade-90 {
+  background-color: var(--color-black-opacity-90);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-90);
+  }
+}
+
+@utility theme-bg-shade-100 {
+  background-color: var(--color-black-opacity-100);
+
+  &:is(.dark *) {
+    background-color: var(--color-white-opacity-100);
+  }
+}
+
+/* Button Hover Effects */
+@utility button-hover-dark {
+  &:hover {
+    box-shadow: rgb(0 0 0 / 10%) 0px 0px 0px 9999px inset;
+  }
+}
+
+@utility button-hover-darker {
+  &:hover {
+    box-shadow: rgb(0 0 0 / 15%) 0px 0px 0px 9999px inset;
+  }
+}
+
+/* Components */
+@utility container {
+  @apply max-w-7xl mx-auto px-4 sm:px-7;
+}
+
+@utility container-max-sm {
+  @apply max-w-lg mx-auto px-4 sm:px-7;
+}
+
+@utility container-max-tab {
+  @apply max-w-3xl mx-auto px-4 sm:px-7;
+}
+
+@utility container-max-md {
+  @apply max-w-4xl mx-auto px-4 sm:px-7;
+}
+
+@utility container-max-lg {
+  @apply max-w-5xl mx-auto px-4 sm:px-7;
+}
+
+@utility container-max-xl {
+  @apply max-w-7xl mx-auto px-4 sm:px-7;
+}
+
+@utility box {
+  @apply theme-fg-color theme-border-color border rounded-[var(--theme-rounded)];
+}
+
 @utility nav-menu-item {
   @apply theme-fc-light hover:text-primary-100 dark:hover:theme-fc-heading no-underline p-[6px] text-base md:text-sm transition-all duration-300;
 }
 
-/**
- * Box - Standard card/panel styling
- * Includes: background, border, and radius
- * Usage: <div class="box">Card content</div>
- */
-@utility box {
-  @apply theme-fg-color theme-border-color border theme-rounded;
-}
-
-@variant dark (&:where(.dark, .dark *));
-
-@layer base {
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply text-fc-heading font-medium;
+@keyframes accordion-down {
+  from {
+    height: 0;
   }
 
-  input[type=color],
-  input[type=date],
-  input[type=datetime-local],
-  input[type=datetime],
-  input[type=email],
-  input[type=month],
-  input[type=number],
-  input[type=password],
-  input[type=range],
-  input[type=search],
-  input[type=tel],
-  input[type=text],
-  input[type=time],
-  input[type=url],
-  input[type=week],
-  select,
-  textarea {
-    display: inline-block;
-    font-family: inherit;
-    font-style: inherit;
-    font-size: 14px;
-    height: 52px;
-    outline: 0;
-    vertical-align: middle;
-    background-color: transparent;
-    border: 1px solid #ffffff20;
-    border-radius: var(--theme-rounded);
-    box-shadow: none;
-    padding: 15px 20px;
-    width: 100%;
-    transition: .3s;
-  }
-
-  textarea {
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    line-height: 20px;
-    vertical-align: top;
-  }
-
-  input[type=text]:focus,
-  input[type=email]:focus,
-  input[type=url]:focus,
-  input[type=password]:focus,
-  input[type=search]:focus,
-  input[type=number]:focus,
-  input[type=tel]:focus,
-  input[type=range]:focus,
-  input[type=date]:focus,
-  input[type=month]:focus,
-  input[type=week]:focus,
-  input[type=time]:focus,
-  input[type=datetime]:focus,
-  input[type=datetime-local]:focus,
-  input[type=color]:focus,
-  textarea:focus {
-    background-color: #00000025;
-    border-color: #ffffff30;
-    box-shadow: none;
-  }
-
-  form ::placeholder {
-    color: var(--fc-lighter);
-    opacity: 1;
-  }
-
-  form ::-ms-input-placeholder {
-    color: var(--fc-lighter);
-  }
-
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.site {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.site-content {
-  flex-grow: 1;
-}
-
-/*--------------------------------------------------------------
-# Header
---------------------------------------------------------------*/
-.site-header {
-  z-index: 99;
-}
-
-.site-header.transparent-header {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  border-bottom: 1px solid #ffffff10;
-  z-index: 99;
-  background: transparent;
-}
-
-/* Logo */
-.header-logo svg *,
-.site-branding * {
-  transition: .2s;
-}
-
-.site-header .header-logo {
-  color: var(--color-primary-100);
-}
-
-.site-header.transparent-header .header-logo {
-  color: #fff;
-}
-
-.header-logo:hover {
-  transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1), color 0.2s, box-shadow 0.2s;
-  transform: scale(1.07);
-}
-
-/* Navigation */
-.secondary-menu-list .nav-menu-item {
-  padding: 6px 12px;
-  display: block;
-  width: 100%;
-  border-radius: var(--theme-rounded-sm);
-}
-
-.site-header .main-navigation.mobile .nav-menu-item {
-  font-size: 16px;
-  color: var(--fc-base);
-  padding: 0;
-}
-
-/* Transparent Header */
-/* .transparent-header .site-branding:hover .branding-site-title {
-  color: #ffffffe0;
-} */
-
-/* .transparent-header .nav-menu-item{
-  color: #ffffff8a;
-}
-
-.transparent-header .nav-menu-item:hover{
-  color: #ffffff;
-} */
-
-/* .transparent-header
-
-.menu-item.current-menu-item .nav-menu-item {
-  color: var(--color-primary-100);
-} */
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground;
+  to {
+    height: var(--radix-accordion-content-height);
   }
 }
 
-/* Rich Text Styles */
-
-.zee-richtext h1:first-child,
-.zee-richtext h2:first-child,
-.zee-richtext h3:first-child,
-.zee-richtext h4:first-child,
-.zee-richtext h5:first-child,
-.zee-richtext h6:first-child,
-.zee-richtext h7:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-.text-gradient-1 {
-  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.425) -17%, rgb(255, 255, 255) 50%, rgb(255, 255, 255) 50%, rgba(255, 255, 255, 0.16) 113%);
-  display: inline-block;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding: max(0em, calc(calc(1.3em - var(--framer-blockquote-line-height, var(--framer-line-height, 1.3em))) / 2));
-  margin: min(0em, calc(calc(1.3em - var(--framer-blockquote-line-height, var(--framer-line-height, 1.3em))) / -2));
-}
-
-/* Single Lesson */
-
-.single-lesson-wrap .lesson-sidebar {
-  display: none;
-}
-
-.single-lesson-wrap.sidebar-open .lesson-sidebar {
-  display: block;
-}
-
-@media (max-width: 767px) {
-  .single-lesson-wrap .lesson-sidebar {
-    display: none;
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
   }
 
-  .single-lesson-wrap.sidebar-open .lesson-sidebar {
-    display: block;
+  to {
+    height: 0;
   }
-}
-
-@media (min-width: 768px) {
-  .single-lesson-wrap .lesson-sidebar {
-    display: block;
-  }
-
-  .single-lesson-wrap.sidebar-closed .lesson-sidebar {
-    display: none;
-  }
-}
-
-/*---break---
- */
-
-.dark {
-  /* Sidebar variables mapped to design system tokens (dark mode) */
-  --sidebar: var(--color-layout-foreground--dark);
-  --sidebar-foreground: var(--color-fc-heading--dark);
-  --sidebar-primary: var(--color-primary-100--dark);
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: var(--color-primary-12--dark);
-  --sidebar-accent-foreground: var(--color-fc-heading--dark);
-  --sidebar-border: var(--color-layout-border--dark);
-  --sidebar-ring: var(--color-primary-50--dark);
-}
-
-/*---break---
- */
-
-@theme inline {
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }

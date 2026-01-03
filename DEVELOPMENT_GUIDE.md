@@ -63,7 +63,7 @@ This project uses a custom design system defined in `app/globals.css`. **Do not 
 ### 1. Colors (Facebook Blue Theme)
 
 **Primary Brand Colors:**
-The design system provides specific utility classes for the primary color palette. Due to Tailwind v4 specifics, these are defined as standard CSS classes in `globals.css`.
+The design system provides specific utility classes for the primary color palette. These are defined as custom CSS classes in `globals.css` that map to our variables.
 
 | Opacity | Background Class | Text Class | Variable |
 |---------|------------------|------------|----------|
