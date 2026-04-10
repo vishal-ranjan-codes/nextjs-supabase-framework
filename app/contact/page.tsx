@@ -1,41 +1,12 @@
-'use client'
+import type { Metadata } from 'next'
+import ContactForm from './ContactForm'
 
-import { Metadata } from 'next'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select'
-import { useToast } from '@/hooks/use-toast'
+export const metadata: Metadata = {
+    title: 'Contact',
+    description: 'Get in touch with us.',
+}
 
 export default function ContactPage() {
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const { toast } = useToast()
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setIsSubmitting(true)
-
-        // Simulate form submission
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-
-        toast({
-            title: 'Message sent!',
-            description: 'We\'ll get back to you as soon as possible.',
-        })
-
-        setIsSubmitting(false)
-        // Reset form
-        e.currentTarget.reset()
-    }
-
     return (
         <div className="theme-bg-color py-16 md:py-24">
             <div className="container-max-md">
@@ -43,87 +14,13 @@ export default function ContactPage() {
                 <div className="text-center mb-12">
                     <h1 className="theme-h1 text-4xl md:text-5xl mb-4">Get in Touch</h1>
                     <p className="theme-fc-light text-lg">
-                        Have questions about the framework? We'd love to hear from you.
+                        Have questions about the framework? We&apos;d love to hear from you.
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 mb-12">
                     {/* Contact Form */}
-                    <div className="box p-6 md:p-8">
-                        <h2 className="theme-h3 mb-6">Send us a Message</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Name */}
-                            <div className="space-y-2">
-                                <Label htmlFor="name" className="theme-fc-heading">
-                                    Name *
-                                </Label>
-                                <Input
-                                    id="name"
-                                    name="name"
-                                    placeholder="John Doe"
-                                    required
-                                    className="theme-fg-color theme-border-color theme-fc-base"
-                                />
-                            </div>
-
-                            {/* Email */}
-                            <div className="space-y-2">
-                                <Label htmlFor="email" className="theme-fc-heading">
-                                    Email *
-                                </Label>
-                                <Input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    placeholder="john@example.com"
-                                    required
-                                    className="theme-fg-color theme-border-color theme-fc-base"
-                                />
-                            </div>
-
-                            {/* Subject */}
-                            <div className="space-y-2">
-                                <Label htmlFor="subject" className="theme-fc-heading">
-                                    Subject *
-                                </Label>
-                                <Select name="subject" required>
-                                    <SelectTrigger id="subject" className="theme-fg-color theme-border-color">
-                                        <SelectValue placeholder="Select a subject" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="general">General Inquiry</SelectItem>
-                                        <SelectItem value="support">Technical Support</SelectItem>
-                                        <SelectItem value="feedback">Feedback</SelectItem>
-                                        <SelectItem value="collaboration">Collaboration</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Message */}
-                            <div className="space-y-2">
-                                <Label htmlFor="message" className="theme-fc-heading">
-                                    Message *
-                                </Label>
-                                <Textarea
-                                    id="message"
-                                    name="message"
-                                    placeholder="Tell us more about your inquiry..."
-                                    rows={5}
-                                    required
-                                    className="theme-fg-color theme-border-color theme-fc-base resize-none"
-                                />
-                            </div>
-
-                            {/* Submit Button */}
-                            <Button
-                                type="submit"
-                                className="w-full"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? 'Sending...' : 'Send Message'}
-                            </Button>
-                        </form>
-                    </div>
+                    <ContactForm />
 
                     {/* Contact Information */}
                     <div className="space-y-6">

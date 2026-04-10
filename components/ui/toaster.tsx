@@ -1,3 +1,4 @@
+// @deprecated — use `@/components/ui/sonner` instead
 "use client"
 
 import { useToast } from "@/hooks/use-toast"

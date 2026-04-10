@@ -1,9 +1,3 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/generate-orders",
-      "schedule": "0 2 * * *"
-    }
-  ]
+  "framework": "nextjs"
 }
-

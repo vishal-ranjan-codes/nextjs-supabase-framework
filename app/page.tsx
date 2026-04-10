@@ -35,7 +35,7 @@ export default function HomePage() {
             {/* Features Section */}
             <section className="py-16 md:py-24 theme-bg-color-dark">
                 <div className="container">
-                    <h2 className="theme-h2 text-center mb-12">What's Included</h2>
+                    <h2 className="theme-h2 text-center mb-12">What&apos;s Included</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature) => (
                             <div key={feature.title} className="box p-6">

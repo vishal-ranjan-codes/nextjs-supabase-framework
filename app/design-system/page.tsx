@@ -247,7 +247,7 @@ export default function DesignSystemPage() {
                                 <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
-                                Do's
+                                Do&apos;s
                             </h3>
                             <ul className="space-y-2 theme-fc-light text-sm">
                                 <li>✓ Use theme utilities (<code>theme-fc-base</code>, <code>bg-primary</code>)</li>

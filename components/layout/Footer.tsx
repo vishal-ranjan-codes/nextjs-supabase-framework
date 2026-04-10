@@ -80,7 +80,7 @@ export default function Footer() {
 
                 <div className="theme-border-color border-t mt-8 pt-8">
                     <p className="theme-fc-light text-sm text-center">
-                        © {new Date().getFullYear()} Next.js + Supabase Framework. Built with ❤️ for developers.
+                        © 2026 Next.js + Supabase Framework. Built with ❤️ for developers.
                     </p>
                 </div>
             </div>

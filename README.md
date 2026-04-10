@@ -4,7 +4,7 @@ A comprehensive Next.js and Supabase framework starter with a complete design sy
 
 ## Features
 
-- **Modern Stack**: Next.js 15.3.1, React 19, TypeScript, Tailwind CSS v4
+- **Modern Stack**: Next.js 16, React 19, TypeScript, Tailwind CSS v4
 - **Supabase Integration**: Pre-configured with latest connection methods
 - **Design System**: Comprehensive design tokens with Facebook blue brand colors
 - **40+ Components**: shadcn/ui components built with Radix UI
@@ -43,6 +43,7 @@ A comprehensive Next.js and Supabase framework starter with a complete design sy
    Update `.env.local` with your Supabase project details:
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-anon-key
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
    ```
 
@@ -74,6 +75,7 @@ nextjs-supabase-framework/
 │   └── utils/               # Utility functions
 ├── hooks/                   # Custom React hooks
 ├── types/                   # TypeScript type definitions
+├── proxy.ts                 # Auth middleware replacement — exports named `proxy` function (not `middleware`)
 └── public/                  # Static assets
 ```
 
@@ -94,7 +96,8 @@ View the complete design system documentation at `/design-system`.
 ### Required
 
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous/public key
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: Your Supabase anon/public key (current Supabase dashboard name — used in `proxy.ts`)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Legacy alias for the anon/public key — still used in `lib/supabase/server.ts` and `lib/supabase/client.ts` for backward compatibility
 
 ### Optional
 
@@ -111,6 +114,7 @@ View the complete design system documentation at `/design-system`.
    ```bash
    npm run supabase:types
    ```
+   This outputs to `types/database.types.ts`. Re-run after every schema change.
 
 For more details, see [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md).
 
@@ -121,7 +125,7 @@ For more details, see [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md).
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run type-check` - Run TypeScript type checking
-- `npm run supabase:types` - Generate TypeScript types from Supabase
+- `npm run supabase:types` - Generate TypeScript types from Supabase schema into `types/database.types.ts`
 
 ## Building Your Application
 
@@ -130,6 +134,25 @@ For more details, see [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md).
 3. **Customize Colors**: Adjust design tokens in `app/globals.css` if needed
 4. **Add Features**: Build new pages and components using the design system
 5. **Configure Supabase**: Set up your database schema and APIs
+
+## Auth Middleware (`proxy.ts`)
+
+This project uses `proxy.ts` at the project root instead of `middleware.ts`. It exports a named `proxy` function (not `middleware`) — this is the Next.js 16 pattern:
+
+```ts
+// proxy.ts
+export async function proxy(request: NextRequest): Promise<NextResponse> { ... }
+```
+
+> **Note**: Do not rename this file to `middleware.ts` or rename the export to `middleware`.
+
+## React Compiler
+
+`next.config.ts` enables `reactCompiler: true`. This requires `babel-plugin-react-compiler` to be present in `devDependencies`. It is already included in this project's `package.json`. If you see a build error about the React Compiler, run:
+
+```bash
+npm install
+```
 
 ## Design Tokens
 

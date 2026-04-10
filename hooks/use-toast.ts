@@ -1,3 +1,4 @@
+// @deprecated — use `import { toast } from 'sonner'` instead
 'use client'
 
 import * as React from "react"
@@ -134,7 +135,7 @@ function dispatch(action: Action) {
     })
 }
 
-interface Toast extends Omit<ToasterToast, "id"> { }
+type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
     const id = genId()

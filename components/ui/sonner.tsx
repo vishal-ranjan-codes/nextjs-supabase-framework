@@ -2,14 +2,16 @@
 
 import { useTheme } from "next-themes"
 import { Toaster as Sonner, ToasterProps } from "sonner"
-import { useEffect, useState } from "react"
+import { useEffect, useState, startTransition } from "react"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    startTransition(() => {
+      setMounted(true)
+    })
   }, [])
 
   return (

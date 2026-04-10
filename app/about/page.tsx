@@ -41,7 +41,7 @@ export default function AboutPage() {
                                 while maintaining flexibility and scalability.
                             </p>
                             <p className="theme-fc-light">
-                                Whether you're building a SaaS platform, a content management system, or a data-driven
+                                Whether you&apos;re building a SaaS platform, a content management system, or a data-driven
                                 application, this framework provides the foundation you need with best practices baked in.
                             </p>
                         </div>
