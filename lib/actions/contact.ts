@@ -12,17 +12,17 @@ const ContactSchema = z.object({
 
 export async function submitContactAction(
   formData: FormData
-): Promise<{ error?: string; success?: boolean }> {
+): Promise<{ success: boolean; error?: string; data?: any }> {
   // Step 1: Authenticate
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Unauthorized' }
+  if (!user) return { success: false, error: 'Unauthorized' }
 
   // Step 2: Validate
   const parsed = ContactSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
     const fieldError = parsed.error.errors[0]?.message ?? 'Invalid form data'
-    return { error: fieldError }
+    return { success: false, error: fieldError }
   }
 
   // Step 3: Act
@@ -32,7 +32,7 @@ export async function submitContactAction(
     // if (error) throw error
   } catch (error) {
     console.error('[submitContactAction]', error)
-    return { error: 'Something went wrong. Please try again.' }
+    return { success: false, error: 'Something went wrong. Please try again.' }
   }
 
   return { success: true }
