@@ -12,7 +12,7 @@ const ContactSchema = z.object({
 
 export async function submitContactAction(
   formData: FormData
-): Promise<{ success: boolean; error?: string; data?: any }> {
+): Promise<{ success: boolean; error?: string; data?: unknown }> {
   // Step 1: Authenticate
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()

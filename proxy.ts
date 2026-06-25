@@ -5,8 +5,8 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
     {
       cookies: {
         getAll() {
@@ -25,15 +25,34 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   // IMPORTANT: Do not add logic between createServerClient and getUser().
   // Session refresh requires getUser() to be called immediately after client creation.
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // REFERENCE: Protected route redirect pattern (uncomment and adapt as needed):
-  // const { data: { user } } = await supabase.auth.getUser()
-  // if (!user && !request.nextUrl.pathname.startsWith('/sign-in')) {
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/sign-in'
-  //   return NextResponse.redirect(url)
-  // }
+  const pathname = request.nextUrl.pathname
+
+  // Define public paths that do not require authentication
+  const isPublicPath =
+    pathname === '/' ||
+    pathname.startsWith('/about') ||
+    pathname.startsWith('/contact') ||
+    pathname.startsWith('/design-system') ||
+    pathname.startsWith('/auth')
+
+  // Define auth paths
+  const isAuthPath = pathname.startsWith('/sign-in')
+
+  if (!user && !isPublicPath && !isAuthPath) {
+    // Redirect unauthenticated users to sign-in page
+    const url = request.nextUrl.clone()
+    url.pathname = '/sign-in'
+    return NextResponse.redirect(url)
+  }
+
+  if (user && isAuthPath) {
+    // Redirect authenticated users away from sign-in to dashboard
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
 
   // IMPORTANT: Return supabaseResponse unmodified to preserve cookie sync.
   return supabaseResponse

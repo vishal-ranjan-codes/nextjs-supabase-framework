@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import MobileNav from './MobileNav'
@@ -15,9 +15,32 @@ import {
     NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
+import type { User } from '@supabase/supabase-js'
 
 export default function Header() {
     const pathname = usePathname()
+    const router = useRouter()
+    const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const supabase = createClient()
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            setUser(user)
+            setLoading(false)
+        })
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            setUser(session?.user ?? null)
+            setLoading(false)
+        })
+
+        return () => {
+            subscription.unsubscribe()
+        }
+    }, [])
 
     return (
         <header className="sticky top-0 z-50 theme-fg-color theme-border-color border-b backdrop-blur-sm bg-opacity-90">
@@ -131,14 +154,44 @@ export default function Header() {
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
-                        <Button
-                            variant="default"
-                            size="sm"
-                            asChild
-                            className="hidden sm:inline-flex"
-                        >
-                            <Link href="/design-system">Get Started</Link>
-                        </Button>
+                        {!loading && (
+                            <>
+                                {user ? (
+                                    <>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            asChild
+                                            className="hidden sm:inline-flex"
+                                        >
+                                            <Link href="/dashboard">Dashboard</Link>
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={async () => {
+                                                const supabase = createClient()
+                                                await supabase.auth.signOut()
+                                                router.push('/')
+                                                router.refresh()
+                                            }}
+                                            className="hidden sm:inline-flex text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive"
+                                        >
+                                            Sign Out
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Button
+                                        variant="default"
+                                        size="sm"
+                                        asChild
+                                        className="hidden sm:inline-flex"
+                                    >
+                                        <Link href="/sign-in">Sign In</Link>
+                                    </Button>
+                                )}
+                            </>
+                        )}
                         <MobileNav />
                     </div>
                 </div>

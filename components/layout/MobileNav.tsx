@@ -2,7 +2,7 @@
 
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import {
     Sheet,
@@ -17,9 +17,32 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion'
+import { createClient } from '@/lib/supabase/client'
+import type { User } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation'
 
 export default function MobileNav() {
     const [open, setOpen] = useState(false)
+    const router = useRouter()
+    const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const supabase = createClient()
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            setUser(user)
+            setLoading(false)
+        })
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            setUser(session?.user ?? null)
+            setLoading(false)
+        })
+
+        return () => {
+            subscription.unsubscribe()
+        }
+    }, [])
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -158,13 +181,42 @@ export default function MobileNav() {
                         >
                             Contact
                         </Link>
+                        {user && (
+                            <Link
+                                href="/dashboard"
+                                className="nav-menu-item py-2"
+                                onClick={() => setOpen(false)}
+                            >
+                                Dashboard
+                            </Link>
+                        )}
                     </div>
 
-                    <Button variant="default" className="mt-4" asChild>
-                        <Link href="/design-system" onClick={() => setOpen(false)}>
-                            Get Started
-                        </Link>
-                    </Button>
+                    {!loading && (
+                        <>
+                            {user ? (
+                                <Button
+                                    variant="outline"
+                                    className="mt-4 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive"
+                                    onClick={async () => {
+                                        setOpen(false)
+                                        const supabase = createClient()
+                                        await supabase.auth.signOut()
+                                        router.push('/')
+                                        router.refresh()
+                                    }}
+                                >
+                                    Sign Out
+                                </Button>
+                            ) : (
+                                <Button variant="default" className="mt-4" asChild>
+                                    <Link href="/sign-in" onClick={() => setOpen(false)}>
+                                        Sign In
+                                    </Link>
+                                </Button>
+                            )}
+                        </>
+                    )}
                 </nav>
             </SheetContent>
         </Sheet>
