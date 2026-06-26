@@ -7,11 +7,13 @@ export interface NavLinkItem {
 export interface NavSection {
     label: string
     items: NavLinkItem[]
+    gridClassName?: string
 }
 
 export const navSections: NavSection[] = [
     {
         label: 'Getting Started',
+        gridClassName: 'grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2',
         items: [
             { href: '/', title: 'Introduction', description: 'Quick overview of the framework and its features' },
             { href: '/design-system', title: 'Design System', description: 'Comprehensive design tokens and components' },
@@ -21,6 +23,7 @@ export const navSections: NavSection[] = [
     },
     {
         label: 'Components',
+        gridClassName: 'grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-2',
         items: [
             { href: '/design-system#components', title: 'Form Elements', description: 'Inputs, selects, checkboxes, and more' },
             { href: '/design-system#components', title: 'Navigation', description: 'Menus, breadcrumbs, and tabs' },
@@ -32,6 +35,7 @@ export const navSections: NavSection[] = [
     },
     {
         label: 'Examples',
+        gridClassName: 'grid w-[400px] gap-3 p-4',
         items: [
             { href: '/about', title: 'About Page', description: 'Example page with hero and content sections' },
             { href: '/contact', title: 'Contact Page', description: 'Form layout and validation patterns' },
