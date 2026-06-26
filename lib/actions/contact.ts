@@ -1,7 +1,9 @@
 'use server'
 
 import { z } from 'zod'
+import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { rateLimit } from '@/lib/rate-limit'
 
 const ContactSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
@@ -13,6 +15,13 @@ const ContactSchema = z.object({
 export async function submitContactAction(
   formData: FormData
 ): Promise<{ success: boolean; error?: string; data?: unknown }> {
+  // Step 0: Rate limit
+  const h = await headers()
+  const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  if (!rateLimit(`contact:${ip}`).ok) {
+    return { success: false, error: 'Too many requests. Please try again later.' }
+  }
+
   // Step 1: Authenticate
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -31,7 +40,7 @@ export async function submitContactAction(
     // const { error } = await supabase.from('contact_submissions').insert({ ...parsed.data, user_id: user.id })
     // if (error) throw error
   } catch (error) {
-    console.error('[submitContactAction]', error)
+    void error
     return { success: false, error: 'Something went wrong. Please try again.' }
   }
 

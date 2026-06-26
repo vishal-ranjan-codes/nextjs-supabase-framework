@@ -54,7 +54,7 @@
     "lightningcss": "^1.32.0",
     "lucide-react": "^0.474.0",
     "motion": "^12.23.12",
-    "next": "16.1.1",
+    "next": "^16.2.9",
     "next-themes": "^0.4.6",
     "react": "19.2.3",
     "react-day-picker": "^9.11.1",
@@ -73,16 +73,17 @@
     "@types/react-dom": "19.2.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.1.1",
+    "eslint-config-next": "^16.2.9",
     "fast-check": "^3",
-    "vitest": "^3",
-    "postcss": "^8",
+    "postcss": "^8.5.10",
     "supabase": "^2.58.5",
     "tailwindcss": "^4.1.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3"
   },
   "overrides": {
     "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.3"
+    "@types/react-dom": "19.2.3",
+    "postcss": "$postcss"
   }
 }

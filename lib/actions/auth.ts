@@ -1,8 +1,10 @@
 'use server'
 
 import { z } from 'zod'
+import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { rateLimit } from '@/lib/rate-limit'
 
 const AuthSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -15,10 +17,20 @@ export type ActionState = {
   message?: string
 }
 
+async function getClientIp(): Promise<string> {
+  const h = await headers()
+  return h.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+}
+
 export async function signInWithEmailAction(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
+  const ip = await getClientIp()
+  if (!rateLimit(`sign-in:${ip}`).ok) {
+    return { success: false, error: 'Too many requests. Please try again later.' }
+  }
+
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -54,6 +66,11 @@ export async function signUpWithEmailAction(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
+  const ip = await getClientIp()
+  if (!rateLimit(`sign-up:${ip}`).ok) {
+    return { success: false, error: 'Too many requests. Please try again later.' }
+  }
+
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -102,7 +119,7 @@ export async function signOutAction(): Promise<void> {
     const supabase = await createClient()
     await supabase.auth.signOut()
     revalidatePath('/', 'layout')
-  } catch (err: unknown) {
-    console.error('Sign out error:', err)
+  } catch {
+    // Sign-out failure is non-critical; swallow to avoid leaking details
   }
 }
