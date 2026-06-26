@@ -15,32 +15,14 @@ import {
     NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
-import type { User } from '@supabase/supabase-js'
+import { useAuth } from '@/hooks/use-auth'
+import { signOutAndRedirect } from '@/lib/auth-utils'
+import { navSections, topNavLinks } from '@/lib/navigation-data'
 
 export default function Header() {
     const pathname = usePathname()
     const router = useRouter()
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const supabase = createClient()
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            setUser(user)
-            setLoading(false)
-        })
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            setUser(session?.user ?? null)
-            setLoading(false)
-        })
-
-        return () => {
-            subscription.unsubscribe()
-        }
-    }, [])
+    const { user, loading } = useAuth()
 
     return (
         <header className="sticky top-0 z-50 theme-fg-color theme-border-color border-b backdrop-blur-sm bg-opacity-90">
@@ -60,95 +42,37 @@ export default function Header() {
                     <nav className="hidden md:flex items-center gap-1">
                         <NavigationMenu>
                             <NavigationMenuList>
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger>
-                                        Getting Started
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
-                                            <ListItem href="/" title="Introduction">
-                                                Quick overview of the framework and its features
-                                            </ListItem>
-                                            <ListItem href="/design-system" title="Design System">
-                                                Comprehensive design tokens and components
-                                            </ListItem>
-                                            <ListItem href="/" title="Installation">
-                                                Step-by-step setup instructions
-                                            </ListItem>
-                                            <ListItem href="/" title="Configuration">
-                                                Environment variables and project setup
-                                            </ListItem>
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger>
-                                        Components
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-2">
-                                            <ListItem href="/design-system#components" title="Form Elements">
-                                                Inputs, selects, checkboxes, and more
-                                            </ListItem>
-                                            <ListItem href="/design-system#components" title="Navigation">
-                                                Menus, breadcrumbs, and tabs
-                                            </ListItem>
-                                            <ListItem href="/design-system#components" title="Feedback">
-                                                Alerts, toasts, and dialogs
-                                            </ListItem>
-                                            <ListItem href="/design-system#components" title="Data Display">
-                                                Tables, cards, and badges
-                                            </ListItem>
-                                            <ListItem href="/design-system#colors" title="Colors">
-                                                Full color palette and usage
-                                            </ListItem>
-                                            <ListItem href="/design-system#typography" title="Typography">
-                                                Text styles and hierarchy
-                                            </ListItem>
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger>
-                                        Examples
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4">
-                                            <ListItem href="/about" title="About Page">
-                                                Example page with hero and content sections
-                                            </ListItem>
-                                            <ListItem href="/contact" title="Contact Page">
-                                                Form layout and validation patterns
-                                            </ListItem>
-                                            <ListItem href="/design-system" title="Design System">
-                                                Complete design system documentation
-                                            </ListItem>
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
+                                {navSections.map((section) => (
+                                    <NavigationMenuItem key={section.label}>
+                                        <NavigationMenuTrigger>
+                                            {section.label}
+                                        </NavigationMenuTrigger>
+                                        <NavigationMenuContent>
+                                            <ul className={section.gridClassName ?? 'grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2'}>
+                                                {section.items.map((item) => (
+                                                    <ListItem key={item.title} href={item.href} title={item.title}>
+                                                        {item.description}
+                                                    </ListItem>
+                                                ))}
+                                            </ul>
+                                        </NavigationMenuContent>
+                                    </NavigationMenuItem>
+                                ))}
                             </NavigationMenuList>
                         </NavigationMenu>
 
-                        <Link
-                            href="/about"
-                            className={cn(
-                                'nav-menu-item px-3',
-                                pathname === '/about' && 'text-primary'
-                            )}
-                        >
-                            About
-                        </Link>
-                        <Link
-                            href="/contact"
-                            className={cn(
-                                'nav-menu-item px-3',
-                                pathname === '/contact' && 'text-primary'
-                            )}
-                        >
-                            Contact
-                        </Link>
+                        {topNavLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={cn(
+                                    'nav-menu-item px-3',
+                                    pathname === link.href && 'text-primary'
+                                )}
+                            >
+                                {link.title}
+                            </Link>
+                        ))}
                     </nav>
 
                     {/* Action Buttons */}
@@ -169,12 +93,7 @@ export default function Header() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={async () => {
-                                                const supabase = createClient()
-                                                await supabase.auth.signOut()
-                                                router.push('/')
-                                                router.refresh()
-                                            }}
+                                            onClick={() => signOutAndRedirect(router)}
                                             className="hidden sm:inline-flex text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive"
                                         >
                                             Sign Out

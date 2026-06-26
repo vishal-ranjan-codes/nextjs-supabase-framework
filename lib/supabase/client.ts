@@ -1,9 +1,7 @@
 import { createBrowserClient } from '@supabase/ssr'
 import type { Database } from '@/types/database.types'
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config'
 
 export function createClient() {
-  return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
-  )
+  return createBrowserClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY)
 }
