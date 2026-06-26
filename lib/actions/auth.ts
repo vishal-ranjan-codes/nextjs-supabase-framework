@@ -97,12 +97,26 @@ export async function signUpWithEmailAction(
   }
 }
 
-export async function signOutAction(): Promise<void> {
+export async function signOutAction(): Promise<ActionState> {
   try {
     const supabase = await createClient()
-    await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+      return { success: false, error: error.message }
+    }
+
     revalidatePath('/', 'layout')
+    return { success: true, message: 'Signed out successfully.' }
   } catch (err: unknown) {
-    console.error('Sign out error:', err)
+    const message = err instanceof Error ? err.message : 'An unexpected error occurred during sign out.'
+    return { success: false, error: message }
+  }
+}
+
+export async function signOutFormAction(): Promise<void> {
+  const result = await signOutAction()
+  if (!result.success) {
+    throw new Error(result.error ?? 'Sign out failed')
   }
 }
