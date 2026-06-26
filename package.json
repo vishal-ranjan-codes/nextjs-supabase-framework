@@ -71,15 +71,17 @@
     "@types/node": "^22",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
+    "@vitest/coverage-v8": "^3.2.4",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "fast-check": "^3",
-    "vitest": "^3",
+    "jsdom": "^28.1.0",
     "postcss": "^8",
     "supabase": "^2.58.5",
     "tailwindcss": "^4.1.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3"
   },
   "overrides": {
     "@types/react": "19.2.7",
