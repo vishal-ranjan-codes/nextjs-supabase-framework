@@ -5,10 +5,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Switch } from '@/components/ui/switch'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle, CheckCircle2, Info } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 
 export const metadata: Metadata = {
     title: 'Design System | Next.js + Supabase Framework',
@@ -198,8 +196,59 @@ export default function DesignSystemPage() {
                 <section id="components" className="mb-20">
                     <h2 className="theme-h2 mb-8">Components</h2>
 
-                    {/* ... (Skipped button/form sections as they use components which are already updated) ... */}
-                    {/* Actually, I need to check if any Card examples use manual classes */}
+                    {/* Buttons */}
+                    <div className="mb-12">
+                        <h3 className="theme-h3 mb-6">Buttons</h3>
+                        <div className="box p-8 space-y-6">
+                            <div>
+                                <h4 className="theme-h5 mb-4">Variants</h4>
+                                <div className="flex flex-wrap gap-3">
+                                    <Button>Default</Button>
+                                    <Button variant="secondary">Secondary</Button>
+                                    <Button variant="outline">Outline</Button>
+                                    <Button variant="ghost">Ghost</Button>
+                                    <Button variant="destructive">Destructive</Button>
+                                    <Button variant="link">Link</Button>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 className="theme-h5 mb-4">Sizes</h4>
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <Button size="sm">Small</Button>
+                                    <Button size="default">Default</Button>
+                                    <Button size="lg">Large</Button>
+                                    <Button size="icon"><CheckCircle2 className="w-4 h-4" /></Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Form Elements */}
+                    <div className="mb-12">
+                        <h3 className="theme-h3 mb-6">Form Elements</h3>
+                        <div className="box p-8 space-y-6">
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="demo-input">Input</Label>
+                                    <Input id="demo-input" placeholder="Enter text..." />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="demo-email">Email Input</Label>
+                                    <Input id="demo-email" type="email" placeholder="name@example.com" />
+                                </div>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-6">
+                                <div className="flex items-center gap-2">
+                                    <Checkbox id="demo-check" />
+                                    <Label htmlFor="demo-check">Checkbox</Label>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Switch id="demo-switch" />
+                                    <Label htmlFor="demo-switch">Switch</Label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Cards */}
                     <div className="mb-12">
@@ -235,7 +284,6 @@ export default function DesignSystemPage() {
                         </div>
                     </div>
 
-                    {/* ... */}
                 </section>
 
                 {/* Best Practices */}
@@ -258,12 +306,22 @@ export default function DesignSystemPage() {
                             </ul>
                         </div>
                         <div className="box p-6">
-                            {/* ... */}
+                            <h3 className="theme-h4 mb-4 flex items-center gap-2">
+                                <svg className="w-5 h-5 text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Don&apos;ts
+                            </h3>
+                            <ul className="space-y-2 theme-fc-light text-sm">
+                                <li>✗ Don&apos;t use hardcoded color values</li>
+                                <li>✗ Don&apos;t mix theme systems (CSS vars + arbitrary colors)</li>
+                                <li>✗ Don&apos;t skip dark mode testing</li>
+                                <li>✗ Don&apos;t override component library styles directly</li>
+                                <li>✗ Don&apos;t use pixel-based breakpoints without theme utilities</li>
+                            </ul>
                         </div>
                     </div>
                 </section>
-
-                {/* ... */}
 
                 {/* CTA */}
                 <div className="mt-16 text-center box p-12 bg-primary/5">

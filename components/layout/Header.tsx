@@ -16,31 +16,12 @@ import {
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
-import type { User } from '@supabase/supabase-js'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function Header() {
     const pathname = usePathname()
     const router = useRouter()
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const supabase = createClient()
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            setUser(user)
-            setLoading(false)
-        })
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            setUser(session?.user ?? null)
-            setLoading(false)
-        })
-
-        return () => {
-            subscription.unsubscribe()
-        }
-    }, [])
+    const { user, loading } = useAuth()
 
     return (
         <header className="sticky top-0 z-50 theme-fg-color theme-border-color border-b backdrop-blur-sm bg-opacity-90">

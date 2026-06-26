@@ -4,9 +4,15 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function proxy(request: NextRequest): Promise<NextResponse> {
   let supabaseResponse = NextResponse.next({ request })
 
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !key) {
+    throw new Error('Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are required')
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    url,
+    key,
     {
       cookies: {
         getAll() {
@@ -41,10 +47,10 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   const isAuthPath = pathname.startsWith('/sign-in')
 
   if (!user && !isPublicPath && !isAuthPath) {
-    // Redirect unauthenticated users to sign-in page
-    const url = request.nextUrl.clone()
-    url.pathname = '/sign-in'
-    return NextResponse.redirect(url)
+    const signInUrl = request.nextUrl.clone()
+    signInUrl.pathname = '/sign-in'
+    signInUrl.searchParams.set('next', pathname)
+    return NextResponse.redirect(signInUrl)
   }
 
   if (user && isAuthPath) {

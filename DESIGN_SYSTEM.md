@@ -30,7 +30,92 @@ This design system is built on Tailwind CSS v4.1.4 with custom design tokens and
 
 > **Developer Note:** Use the semantic utility classes (e.g., `.theme-bg-primary-color-75`) for primary brand colors to ensure consistency across the application. These classes automatically handle light/dark mode switching via CSS variables.
 
-### ... [Skipped sections] ...
+### Dark Theme
+
+#### Primary Colors
+- **Primary 100**: `#4A9FFF` - Full opacity, brighter blue for dark backgrounds
+- **Primary 75**: `#4A9FFFbf` - 75% opacity for hover states
+- **Primary 50**: `#4A9FFF80` - 50% opacity for disabled states
+- **Primary 25**: `#4A9FFF40` - 25% opacity for subtle backgrounds
+- **Primary 12**: `#4A9FFF1f` - 12% opacity for accent backgrounds
+- **Primary 08**: `#4A9FFF14` - 8% opacity for hover backgrounds
+- **Primary 05**: `#4A9FFF0d` - 5% opacity for very subtle tints
+
+### Typography Colors
+
+| Token               | Light     | Dark      | Usage                  |
+|----------------------|-----------|-----------|------------------------|
+| `fc-heading`         | `#262626` | `#FAFAFA` | Primary headings       |
+| `fc-heading-light`   | `#363636` | `#E8E8E8` | Secondary headings     |
+| `fc-base`            | `#4D4D4D` | `#CCCCCC` | Body text              |
+| `fc-light`           | `#8C8C8C` | `#A0A0A0` | Muted text, labels     |
+| `fc-lighter`         | `#BFBFBF` | `#808080` | Placeholder, disabled  |
+
+### Layout Colors
+
+| Token                   | Light     | Dark      | Usage              |
+|--------------------------|-----------|-----------|---------------------|
+| `layout-background`      | `#F5F5F5` | `#0A0A0A` | Page background     |
+| `layout-background-dark` | `#eeeeee` | `#050505` | Darker sections     |
+| `layout-foreground`      | `#fff`    | `#1A1A1A` | Cards, panels       |
+| `layout-foreground-dark` | `#FAFAFA` | `#242424` | Elevated surfaces   |
+| `layout-border`          | `#dfdfdf` | `#333333` | Standard borders    |
+| `layout-border-light`    | `#F0F0F0` | `#2A2A2A` | Subtle dividers     |
+
+## Typography Scale
+
+| Utility     | Size               | Weight    | Usage              |
+|-------------|--------------------|-----------|--------------------|
+| `theme-h1`  | 2rem (32px)        | Medium    | Page titles        |
+| `theme-h2`  | 1.75rem (28px)     | Medium    | Section headings   |
+| `theme-h3`  | 1.5rem (24px)      | Medium    | Subsection headings|
+| `theme-h4`  | 1.25rem (20px)     | Medium    | Card headings      |
+| `theme-h5`  | 1rem (16px)        | Bold      | Small headings     |
+| `theme-h6`  | 0.875rem (14px)    | Bold + UC | Overline text      |
+
+## Utility Classes
+
+### Background Utilities
+- `theme-bg-color` - Page background
+- `theme-bg-color-dark` - Darker section background
+- `theme-fg-color` - Card/panel foreground
+- `theme-fg-color-dark` - Elevated card foreground
+
+### Text Color Utilities
+- `theme-fc-heading` - Heading text
+- `theme-fc-heading-light` - Secondary heading text
+- `theme-fc-base` - Body text
+- `theme-fc-light` - Muted/label text
+- `theme-fc-lighter` - Placeholder/disabled text
+
+### Border Utilities
+- `theme-border-color` - Standard borders
+- `theme-border-color-light` - Subtle dividers
+
+### Component Utilities
+- `box` - Standard card container (`theme-fg-color` + `theme-border-color` + border + rounded)
+- `container` / `container-max-xl` - 1280px max width
+- `container-max-lg` - 1024px max width
+- `container-max-md` - 896px max width
+- `container-max-tab` - 768px max width
+- `container-max-sm` - 512px max width
+
+## Component Guidelines
+
+### Cards
+Use the `box` utility for consistent card styling:
+```html
+<div class="box p-6">
+  <h3 class="theme-h3">Card Title</h3>
+  <p class="theme-fc-base">Card content</p>
+</div>
+```
+
+### Buttons
+Use Shadcn `<Button>` component with standard variants: `default`, `secondary`, `outline`, `ghost`, `destructive`, `link`. Sizes: `sm`, `default`, `lg`, `icon`.
+
+### Forms
+Use Shadcn form components (`Input`, `Select`, `Checkbox`, `Switch`, `Textarea`) with `Label`. All automatically follow the theme.
 
 ## Customization Guide
 

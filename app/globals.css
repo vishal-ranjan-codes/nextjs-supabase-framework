@@ -78,6 +78,7 @@
      Primary Brand Color (Dark Mode)
      ------------------------------------------------------------------------ */
   --color-primary: #4A9FFF;
+  --color-primary-btn-gradient: linear-gradient(230deg, #4A9FFF 15%, #1877F2 100%);
 
   /* ------------------------------------------------------------------------ 
      Typography Colors (Dark Mode)

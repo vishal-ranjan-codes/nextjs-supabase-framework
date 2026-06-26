@@ -1,7 +1,7 @@
 'use client'
 
 import { useActionState, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,7 +12,9 @@ import { signInWithEmailAction, signUpWithEmailAction } from '@/lib/actions/auth
 
 export default function AuthForm() {
   const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
+  const searchParams = useSearchParams()
+  const [showSignInPassword, setShowSignInPassword] = useState(false)
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false)
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin')
 
   // Sign In Action state
@@ -32,13 +34,14 @@ export default function AuthForm() {
     if (signInState) {
       if (signInState.success) {
         toast.success(signInState.message || 'Logged in successfully!')
-        router.push('/dashboard')
+        const next = searchParams.get('next') || '/dashboard'
+        router.push(next)
         router.refresh()
       } else if (signInState.error) {
         toast.error(signInState.error)
       }
     }
-  }, [signInState, router])
+  }, [signInState, router, searchParams])
 
   useEffect(() => {
     if (signUpState) {
@@ -104,12 +107,7 @@ export default function AuthForm() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="signin-password">Password</Label>
-                  <a href="#" className="text-xs text-primary hover:underline">
-                    Forgot password?
-                  </a>
-                </div>
+                <Label htmlFor="signin-password">Password</Label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
                     <Lock className="w-4 h-4" />
@@ -117,7 +115,7 @@ export default function AuthForm() {
                   <Input
                     id="signin-password"
                     name="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showSignInPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     required
                     disabled={isSignInPending}
@@ -125,10 +123,10 @@ export default function AuthForm() {
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowSignInPassword(!showSignInPassword)}
                     className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showSignInPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
@@ -179,7 +177,7 @@ export default function AuthForm() {
                   <Input
                     id="signup-password"
                     name="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showSignUpPassword ? 'text' : 'password'}
                     placeholder="Minimum 6 characters"
                     required
                     disabled={isSignUpPending}
@@ -187,10 +185,10 @@ export default function AuthForm() {
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowSignUpPassword(!showSignUpPassword)}
                     className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showSignUpPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>

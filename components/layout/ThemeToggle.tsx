@@ -3,17 +3,13 @@
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState, startTransition } from 'react'
+import { useSyncExternalStore } from 'react'
+
+const emptySubscribe = () => () => {}
 
 export default function ThemeToggle() {
     const { theme, setTheme } = useTheme()
-    const [mounted, setMounted] = useState(false)
-
-    useEffect(() => {
-        startTransition(() => {
-            setMounted(true)
-        })
-    }, [])
+    const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false)
 
     if (!mounted) {
         return (

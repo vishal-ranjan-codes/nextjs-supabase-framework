@@ -2,17 +2,13 @@
 
 import { useTheme } from "next-themes"
 import { Toaster as Sonner, ToasterProps } from "sonner"
-import { useEffect, useState, startTransition } from "react"
+import { useSyncExternalStore } from "react"
+
+const emptySubscribe = () => () => {}
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    startTransition(() => {
-      setMounted(true)
-    })
-  }, [])
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false)
 
   return (
     <Sonner
