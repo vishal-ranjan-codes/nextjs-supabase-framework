@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
@@ -8,6 +9,10 @@ import { LayoutDashboard, LogOut, User, Shield, Key } from 'lucide-react'
 async function DashboardContent() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/sign-in')
+  }
 
   return (
     <div className="theme-bg-color min-h-screen py-16 px-4">
