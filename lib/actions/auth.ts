@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 const AuthSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -117,6 +118,7 @@ export async function signOutAction(): Promise<ActionState> {
 export async function signOutFormAction(): Promise<void> {
   const result = await signOutAction()
   if (!result.success) {
-    throw new Error(result.error ?? 'Sign out failed')
+    redirect(`/sign-in?error=sign_out_failed&error_description=${encodeURIComponent(result.error ?? 'Sign out failed')}`)
   }
+  redirect('/sign-in')
 }
