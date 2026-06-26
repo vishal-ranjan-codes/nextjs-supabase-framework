@@ -6,7 +6,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tummytales.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
   return {
     rules: [
@@ -14,11 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         disallow: [
-          '/customer/',
-          '/vendor/',
-          '/rider/',
-          '/admin/',
-          '/account',
+          '/dashboard/',
           '/auth/',
           '/api/',
           '/_next/',

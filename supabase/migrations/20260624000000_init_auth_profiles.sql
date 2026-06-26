@@ -11,8 +11,8 @@ create table if not exists public.profiles (
 alter table public.profiles enable row level security;
 
 -- Create RLS policies
-create policy "Public profiles are viewable by everyone." on public.profiles
-  for select using (true);
+create policy "Users can view their own profile." on public.profiles
+  for select using (auth.uid() = id);
 
 create policy "Users can update their own profile." on public.profiles
   for update using (auth.uid() = id);
@@ -30,7 +30,7 @@ begin
   );
   return new;
 end;
-$$ language plpgsql security definer;
+$$ language plpgsql security definer set search_path = '';
 
 -- Bind trigger to auth.users insertions
 create or replace trigger on_auth_user_created
