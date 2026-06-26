@@ -1,14 +1,14 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import type { Database } from '@/types/database.types'
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config'
 
 export async function createClient() {
   const cookieStore = await cookies()
 
-  // NEXT_PUBLIC_SUPABASE_ANON_KEY is the backward-compatible alias for the publishable key
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {

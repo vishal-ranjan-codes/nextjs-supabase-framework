@@ -15,14 +15,10 @@ export type ActionState = {
   message?: string
 }
 
-export async function signInWithEmailAction(
-  prevState: ActionState | null,
-  formData: FormData
-): Promise<ActionState> {
+function parseAuthForm(formData: FormData): ActionState | { email: string; password: string } {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
-  // Validate fields
   const parsed = AuthSchema.safeParse({ email, password })
   if (!parsed.success) {
     return {
@@ -30,6 +26,21 @@ export async function signInWithEmailAction(
       error: parsed.error.errors[0]?.message ?? 'Invalid form data',
     }
   }
+  return { email, password }
+}
+
+function toActionError(err: unknown): ActionState {
+  const message = err instanceof Error ? err.message : 'An unexpected error occurred.'
+  return { success: false, error: message }
+}
+
+export async function signInWithEmailAction(
+  prevState: ActionState | null,
+  formData: FormData
+): Promise<ActionState> {
+  const result = parseAuthForm(formData)
+  if ('success' in result) return result
+  const { email, password } = result
 
   try {
     const supabase = await createClient()
@@ -45,8 +56,7 @@ export async function signInWithEmailAction(
     revalidatePath('/dashboard', 'layout')
     return { success: true, message: 'Logged in successfully!' }
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'An unexpected error occurred.'
-    return { success: false, error: message }
+    return toActionError(err)
   }
 }
 
@@ -54,17 +64,9 @@ export async function signUpWithEmailAction(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-
-  // Validate fields
-  const parsed = AuthSchema.safeParse({ email, password })
-  if (!parsed.success) {
-    return {
-      success: false,
-      error: parsed.error.errors[0]?.message ?? 'Invalid form data',
-    }
-  }
+  const result = parseAuthForm(formData)
+  if ('success' in result) return result
+  const { email, password } = result
 
   try {
     const supabase = await createClient()
@@ -81,7 +83,6 @@ export async function signUpWithEmailAction(
       return { success: false, error: error.message }
     }
 
-    // Check if the user session is immediately active (if email confirmation is disabled in Supabase config)
     if (data.session) {
       revalidatePath('/dashboard', 'layout')
       return { success: true, message: 'Signed up and logged in successfully!' }
@@ -92,8 +93,7 @@ export async function signUpWithEmailAction(
       message: 'Registration successful! Please check your email to confirm your account.',
     }
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'An unexpected error occurred.'
-    return { success: false, error: message }
+    return toActionError(err)
   }
 }
 

@@ -2,7 +2,7 @@
 
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
     Sheet,
@@ -17,32 +17,15 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion'
-import { createClient } from '@/lib/supabase/client'
-import type { User } from '@supabase/supabase-js'
+import { useAuth } from '@/hooks/use-auth'
+import { signOutAndRedirect } from '@/lib/auth-utils'
+import { navSections, topNavLinks } from '@/lib/navigation-data'
 import { useRouter } from 'next/navigation'
 
 export default function MobileNav() {
     const [open, setOpen] = useState(false)
     const router = useRouter()
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const supabase = createClient()
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            setUser(user)
-            setLoading(false)
-        })
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            setUser(session?.user ?? null)
-            setLoading(false)
-        })
-
-        return () => {
-            subscription.unsubscribe()
-        }
-    }, [])
+    const { user, loading } = useAuth()
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -58,129 +41,40 @@ export default function MobileNav() {
                 </SheetHeader>
                 <nav className="flex flex-col gap-4 mt-6">
                     <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="getting-started">
-                            <AccordionTrigger className="theme-fc-base">
-                                Getting Started
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className="flex flex-col gap-2 pl-4">
-                                    <Link
-                                        href="/"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Introduction
-                                    </Link>
-                                    <Link
-                                        href="/design-system"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Design System
-                                    </Link>
-                                    <Link
-                                        href="/"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Installation
-                                    </Link>
-                                    <Link
-                                        href="/"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Configuration
-                                    </Link>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="components">
-                            <AccordionTrigger className="theme-fc-base">
-                                Components
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className="flex flex-col gap-2 pl-4">
-                                    <Link
-                                        href="/design-system#components"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Form Elements
-                                    </Link>
-                                    <Link
-                                        href="/design-system#components"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Navigation
-                                    </Link>
-                                    <Link
-                                        href="/design-system#components"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Feedback
-                                    </Link>
-                                    <Link
-                                        href="/design-system#components"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Data Display
-                                    </Link>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="examples">
-                            <AccordionTrigger className="theme-fc-base">
-                                Examples
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className="flex flex-col gap-2 pl-4">
-                                    <Link
-                                        href="/about"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        About Page
-                                    </Link>
-                                    <Link
-                                        href="/contact"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Contact Page
-                                    </Link>
-                                    <Link
-                                        href="/design-system"
-                                        className="nav-menu-item py-2"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Design System
-                                    </Link>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
+                        {navSections.map((section) => (
+                            <AccordionItem key={section.label} value={section.label.toLowerCase().replace(/\s+/g, '-')}>
+                                <AccordionTrigger className="theme-fc-base">
+                                    {section.label}
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    <div className="flex flex-col gap-2 pl-4">
+                                        {section.items.map((item) => (
+                                            <Link
+                                                key={item.title}
+                                                href={item.href}
+                                                className="nav-menu-item py-2"
+                                                onClick={() => setOpen(false)}
+                                            >
+                                                {item.title}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
                     </Accordion>
 
                     <div className="border-t theme-border-color pt-4 flex flex-col gap-2">
-                        <Link
-                            href="/about"
-                            className="nav-menu-item py-2"
-                            onClick={() => setOpen(false)}
-                        >
-                            About
-                        </Link>
-                        <Link
-                            href="/contact"
-                            className="nav-menu-item py-2"
-                            onClick={() => setOpen(false)}
-                        >
-                            Contact
-                        </Link>
+                        {topNavLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="nav-menu-item py-2"
+                                onClick={() => setOpen(false)}
+                            >
+                                {link.title}
+                            </Link>
+                        ))}
                         {user && (
                             <Link
                                 href="/dashboard"
@@ -198,12 +92,9 @@ export default function MobileNav() {
                                 <Button
                                     variant="outline"
                                     className="mt-4 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive"
-                                    onClick={async () => {
+                                    onClick={() => {
                                         setOpen(false)
-                                        const supabase = createClient()
-                                        await supabase.auth.signOut()
-                                        router.push('/')
-                                        router.refresh()
+                                        signOutAndRedirect(router)
                                     }}
                                 >
                                     Sign Out
