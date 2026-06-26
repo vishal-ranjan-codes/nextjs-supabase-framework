@@ -14,8 +14,18 @@ export async function submitContactAction(
   formData: FormData
 ): Promise<{ success: boolean; error?: string; data?: unknown }> {
   // Step 1: Authenticate
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  let supabase: Awaited<ReturnType<typeof createClient>>
+  try {
+    supabase = await createClient()
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to initialize database client.'
+    return { success: false, error: message }
+  }
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError) {
+    return { success: false, error: `Authentication failed: ${authError.message}` }
+  }
   if (!user) return { success: false, error: 'Unauthorized' }
 
   // Step 2: Validate
@@ -30,9 +40,9 @@ export async function submitContactAction(
     // TODO: implement actual contact submission (e.g., send email, insert to DB)
     // const { error } = await supabase.from('contact_submissions').insert({ ...parsed.data, user_id: user.id })
     // if (error) throw error
-  } catch (error) {
-    console.error('[submitContactAction]', error)
-    return { success: false, error: 'Something went wrong. Please try again.' }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.'
+    return { success: false, error: message }
   }
 
   return { success: true }

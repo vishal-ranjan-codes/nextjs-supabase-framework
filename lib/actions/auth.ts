@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 const AuthSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -97,12 +98,27 @@ export async function signUpWithEmailAction(
   }
 }
 
-export async function signOutAction(): Promise<void> {
+export async function signOutAction(): Promise<ActionState> {
   try {
     const supabase = await createClient()
-    await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+      return { success: false, error: error.message }
+    }
+
     revalidatePath('/', 'layout')
+    return { success: true, message: 'Signed out successfully.' }
   } catch (err: unknown) {
-    console.error('Sign out error:', err)
+    const message = err instanceof Error ? err.message : 'An unexpected error occurred during sign out.'
+    return { success: false, error: message }
   }
+}
+
+export async function signOutFormAction(): Promise<void> {
+  const result = await signOutAction()
+  if (!result.success) {
+    redirect(`/sign-in?error=sign_out_failed&error_description=${encodeURIComponent(result.error ?? 'Sign out failed')}`)
+  }
+  redirect('/sign-in')
 }

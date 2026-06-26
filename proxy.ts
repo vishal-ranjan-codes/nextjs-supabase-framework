@@ -25,7 +25,13 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   // IMPORTANT: Do not add logic between createServerClient and getUser().
   // Session refresh requires getUser() to be called immediately after client creation.
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+  if (authError) {
+    // Log auth errors for observability but allow the request through
+    // since we handle unauthenticated users below via redirect logic.
+    console.error('[proxy] auth.getUser failed:', authError.message)
+  }
 
   const pathname = request.nextUrl.pathname
 
