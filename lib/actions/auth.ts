@@ -6,7 +6,12 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { rateLimit } from '@/lib/rate-limit'
 
-const AuthSchema = z.object({
+const SignInSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+})
+
+const SignUpSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 })
@@ -35,7 +40,7 @@ export async function signInWithEmailAction(
   const password = formData.get('password') as string
 
   // Validate fields
-  const parsed = AuthSchema.safeParse({ email, password })
+  const parsed = SignInSchema.safeParse({ email, password })
   if (!parsed.success) {
     return {
       success: false,
@@ -75,7 +80,7 @@ export async function signUpWithEmailAction(
   const password = formData.get('password') as string
 
   // Validate fields
-  const parsed = AuthSchema.safeParse({ email, password })
+  const parsed = SignUpSchema.safeParse({ email, password })
   if (!parsed.success) {
     return {
       success: false,

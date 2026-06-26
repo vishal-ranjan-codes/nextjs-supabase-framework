@@ -180,7 +180,7 @@ export default function AuthForm() {
                     id="signup-password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Minimum 6 characters"
+                    placeholder="Minimum 8 characters"
                     required
                     disabled={isSignUpPending}
                     className="pl-10 pr-10"
