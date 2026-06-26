@@ -26,6 +26,8 @@ export const navSections: NavSection[] = [
             { href: '/design-system#components', title: 'Navigation', description: 'Menus, breadcrumbs, and tabs' },
             { href: '/design-system#components', title: 'Feedback', description: 'Alerts, toasts, and dialogs' },
             { href: '/design-system#components', title: 'Data Display', description: 'Tables, cards, and badges' },
+            { href: '/design-system#colors', title: 'Colors', description: 'Full color palette and usage' },
+            { href: '/design-system#typography', title: 'Typography', description: 'Text styles and hierarchy' },
         ],
     },
     {
