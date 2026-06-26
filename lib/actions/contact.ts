@@ -1,7 +1,6 @@
 'use server'
 
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
 
 const ContactSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
@@ -12,23 +11,19 @@ const ContactSchema = z.object({
 
 export async function submitContactAction(
   formData: FormData
-): Promise<{ success: boolean; error?: string; data?: unknown }> {
-  // Step 1: Authenticate
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
-
-  // Step 2: Validate
+): Promise<{ success: boolean; error?: string }> {
+  // Step 1: Validate
   const parsed = ContactSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
     const fieldError = parsed.error.errors[0]?.message ?? 'Invalid form data'
     return { success: false, error: fieldError }
   }
 
-  // Step 3: Act
+  // Step 2: Act
   try {
     // TODO: implement actual contact submission (e.g., send email, insert to DB)
-    // const { error } = await supabase.from('contact_submissions').insert({ ...parsed.data, user_id: user.id })
+    // const supabase = await createClient()
+    // const { error } = await supabase.from('contact_submissions').insert(parsed.data)
     // if (error) throw error
   } catch (error) {
     console.error('[submitContactAction]', error)

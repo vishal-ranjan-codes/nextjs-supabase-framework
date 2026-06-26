@@ -1,13 +1,19 @@
 import { Suspense } from 'react'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { signOutAction } from '@/lib/actions/auth'
 import { LayoutDashboard, LogOut, User, Shield, Key } from 'lucide-react'
+import { FormattedDate } from './FormattedDate'
 
 async function DashboardContent() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/sign-in')
+  }
 
   return (
     <div className="theme-bg-color min-h-screen py-16 px-4">
@@ -44,25 +50,25 @@ async function DashboardContent() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
                 <span className="text-xs theme-fc-light uppercase tracking-wider font-semibold">Email Address</span>
-                <p className="theme-fc-base font-medium break-all">{user?.email}</p>
+                <p className="theme-fc-base font-medium break-all">{user.email}</p>
               </div>
 
               <div className="space-y-1">
                 <span className="text-xs theme-fc-light uppercase tracking-wider font-semibold">User ID</span>
-                <p className="theme-fc-base font-mono text-sm break-all">{user?.id}</p>
+                <p className="theme-fc-base font-mono text-sm break-all">{user.id}</p>
               </div>
 
               <div className="space-y-1">
                 <span className="text-xs theme-fc-light uppercase tracking-wider font-semibold">Last Sign In</span>
                 <p className="theme-fc-base font-medium">
-                  {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString() : 'N/A'}
+                  {user.last_sign_in_at ? <FormattedDate date={user.last_sign_in_at} /> : 'N/A'}
                 </p>
               </div>
 
               <div className="space-y-1">
                 <span className="text-xs theme-fc-light uppercase tracking-wider font-semibold">Account Created</span>
                 <p className="theme-fc-base font-medium">
-                  {user?.created_at ? new Date(user.created_at).toLocaleString() : 'N/A'}
+                  {user.created_at ? <FormattedDate date={user.created_at} /> : 'N/A'}
                 </p>
               </div>
             </div>

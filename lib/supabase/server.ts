@@ -5,10 +5,15 @@ import type { Database } from '@/types/database.types'
 export async function createClient() {
   const cookieStore = await cookies()
 
-  // NEXT_PUBLIC_SUPABASE_ANON_KEY is the backward-compatible alias for the publishable key
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !key) {
+    throw new Error('Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are required')
+  }
+
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    url,
+    key,
     {
       cookies: {
         getAll() {

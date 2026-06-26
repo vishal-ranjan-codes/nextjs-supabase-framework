@@ -674,10 +674,10 @@ const SidebarMenuSkeleton = React.forwardRef<
     showIcon?: boolean
   }
 >(({ className, showIcon = false, ...props }, ref) => {
-  // Deterministic width between 50–90% derived from React's useId to satisfy purity rules.
+  // Deterministic width between 50-90% derived from React's useId.
   const id = React.useId()
-  const seed = id.replace(/\D/g, "") || "0"
-  const width = `${(parseInt(seed.slice(-2) || "0", 10) % 40) + 50}%`
+  const hash = Array.from(id).reduce((acc, ch) => ((acc << 5) - acc + ch.charCodeAt(0)) | 0, 0)
+  const width = `${(Math.abs(hash) % 41) + 50}%`
 
   return (
     <div

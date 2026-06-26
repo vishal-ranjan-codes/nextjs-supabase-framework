@@ -2,7 +2,7 @@
 
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
     Sheet,
@@ -18,31 +18,13 @@ import {
     AccordionTrigger,
 } from '@/components/ui/accordion'
 import { createClient } from '@/lib/supabase/client'
-import type { User } from '@supabase/supabase-js'
+import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/navigation'
 
 export default function MobileNav() {
     const [open, setOpen] = useState(false)
     const router = useRouter()
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const supabase = createClient()
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            setUser(user)
-            setLoading(false)
-        })
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            setUser(session?.user ?? null)
-            setLoading(false)
-        })
-
-        return () => {
-            subscription.unsubscribe()
-        }
-    }, [])
+    const { user, loading } = useAuth()
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
