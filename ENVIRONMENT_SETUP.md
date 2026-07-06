@@ -34,9 +34,9 @@ You need two values:
 | Environment Variable | Dashboard Label | Description |
 |----------------------|-----------------|-------------|
 | `NEXT_PUBLIC_SUPABASE_URL` | **Project URL** | The API endpoint for your project. |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Project API Keys** → **anon** / **public** | Safe to expose in the browser. *Note: Supabase is transitioning to calling this the "Publishable Key".* |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | **API Keys** → **Publishable Key** | Safe to expose in the browser. Formerly called the "anon" or "public" key. |
 
-> **⚠️ Security Warning:** NEVER expose your `service_role` (Secret) key in `NEXT_PUBLIC_` variables. It bypasses all security rules.
+> **⚠️ Security Warning:** NEVER expose your secret key (`SUPABASE_SECRET_KEY`, formerly `service_role` key) in `NEXT_PUBLIC_` variables. It bypasses all database security policies and RLS rules.
 
 ### 2. Configure Authentication
 
@@ -91,8 +91,8 @@ When deploying to Vercel or other platforms:
 
 ## ❓ FAQ
 
-**Q: "Anon Key" vs "Publishable Key"?**
-A: They are the same thing. Supabase is renaming "Anon Key" to "Publishable Key" to better reflect its purpose (safe for client-side use), but the environment variable often remains `NEXT_PUBLIC_SUPABASE_ANON_KEY` for compatibility.
+**Q: "Anon Key" vs "Publishable Key" and "Service Role Key" vs "Secret Key"?**
+A: They represent the same credential types. Supabase updated the names to "Publishable Key" (safe for client-side use) and "Secret Key" (strictly for backend use, bypassing RLS). This framework supports the new environment variables (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY`) with fallback support to the legacy names (`NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY`) for compatibility.
 
 **Q: Where is `createClient`?**
 A: This framework uses the modern `@supabase/ssr` pattern. Check `utils/supabase/server.ts` and `utils/supabase/client.ts` for the client initialization logic.

@@ -42,9 +42,10 @@ A comprehensive Next.js and Supabase framework starter with a complete design sy
 
    Update `.env.local` with your Supabase project details:
    ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-anon-key
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-key
+    SUPABASE_SECRET_KEY=your-secret-key
    ```
 
    You can find these values in your [Supabase project settings](https://app.supabase.com/project/_/settings/api).
@@ -96,12 +97,13 @@ View the complete design system documentation at `/design-system`.
 ### Required
 
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: Your Supabase anon/public key (current Supabase dashboard name — used in `proxy.ts`)
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Legacy alias for the anon/public key — still used in `lib/supabase/server.ts` and `lib/supabase/client.ts` for backward compatibility
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: Your Supabase Publishable key (current Supabase dashboard name, replacing deprecated `anon` key)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Legacy alias for the publishable key (for backward compatibility)
 
 ### Optional
 
-- `SUPABASE_SERVICE_ROLE_KEY`: Server-side operations (keep secret, never expose to client)
+- `SUPABASE_SECRET_KEY`: Supabase Secret API key (replacing deprecated `service_role` key; for server-side/admin operations, keep secret, never expose to client)
+- `SUPABASE_SERVICE_ROLE_KEY`: Legacy alias for the secret key (for backward compatibility)
 
 > **Important**: Variables prefixed with `NEXT_PUBLIC_` are accessible in the browser. Never put sensitive data in these variables.
 

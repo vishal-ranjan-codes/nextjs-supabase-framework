@@ -26,7 +26,8 @@ Create a `.env.local` file in the root directory:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
+SUPABASE_SECRET_KEY=your_secret_key
 ```
 
 ### 3. Installation & Run
@@ -146,6 +147,12 @@ export function CustomCard({ className, children }: { className?: string, childr
   )
 }
 ```
+
+### Database & Stored Procedure Naming Guidelines
+
+To keep the framework project-agnostic while ensuring clean custom extensions:
+- **Tables & Schemas**: Use standard `snake_case` naming **without** any project prefixes (e.g., `profiles`, `subscriptions`, `orders`).
+- **Stored Procedures (RPCs)**: Prefix with `[project_prefix]_[verb]_[noun]` (e.g., `zt_create_license` for a "ZeeTheme" project, or `bb_validate_license` for a "BellyBox" project). This prevents collisions with standard database functions and keeps custom procedures namespaced clearly.
 
 ### Client vs Server Components
 - **Server Components (Default):** Use for data fetching, layouts, and static content.

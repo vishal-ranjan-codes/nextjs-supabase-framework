@@ -5,10 +5,12 @@ import type { Database } from '@/types/database.types'
 export async function createClient() {
   const cookieStore = await cookies()
 
-  // NEXT_PUBLIC_SUPABASE_ANON_KEY is the backward-compatible alias for the publishable key
+  // NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is the new name for the publishable/anon key
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      'placeholder-anon-key',
     {
       cookies: {
         getAll() {
